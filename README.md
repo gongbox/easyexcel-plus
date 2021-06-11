@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://search.maven.org/search?q=g:com.gongbo%20a:easy-excel-*">
+  <a href="https://search.maven.org/search?q=g:com.gongbo%20a:easyexcel-*">
     <img alt="maven" src="https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=flat-square">
   </a>
 
@@ -28,12 +28,12 @@ EasyExcel 增强工具包 - 只做增强不做改变，简化导入，导出操�
 - **损耗小**：EasyExcelPlus 对使用性能几乎没有影响
 
 
-# Latest Version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.gongbox/easy-excel-plus.svg)](https://search.maven.org/search?q=g:com.gongbo%20a:easy-excel-plus*)
+# Latest Version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.gongbox/easyexcel-plus.svg)](https://search.maven.org/search?q=g:com.gongbo%20a:easyexcel-plus*)
 
 ``` xml
 <dependency>
     <groupId>io.github.gongbox</groupId>
-    <artifactId>easy-excel-plus</artifactId>
+    <artifactId>easyexcel-plus</artifactId>
     <version>Latest Version</version>
 </dependency>
 ```

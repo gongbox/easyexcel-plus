@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easy-excel-plus</artifactId>
+        <artifactId>easyexcel-plus</artifactId>
         <groupId>com.gongbo</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easy-excel-plus-spring-boot-starter-test</artifactId>
+    <artifactId>easyexcel-plus-spring-boot-starter-test</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.gongbo</groupId>
-            <artifactId>excel-spring-boot-starter</artifactId>
+            <artifactId>easyexcel-plus-spring-boot-starter</artifactId>
             <version>${excelplus-version}</version>
             <scope>compile</scope>
         </dependency>
@@ -47,7 +47,7 @@
     </dependencies>
 
     <build>
-        <finalName>easy-excel-plus-demo</finalName>
+        <finalName>easyexcel-plus-demo</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

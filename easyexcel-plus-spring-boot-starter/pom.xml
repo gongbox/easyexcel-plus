@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easy-excel-plus</artifactId>
+        <artifactId>easyexcel-plus</artifactId>
         <groupId>com.gongbo</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>excel-spring</artifactId>
+    <artifactId>easyexcel-plus-spring-boot-starter</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -19,15 +19,20 @@
     <dependencies>
         <dependency>
             <groupId>com.gongbo</groupId>
-            <artifactId>excel-export</artifactId>
+            <artifactId>easyexcel-plus-export</artifactId>
             <version>${excelplus-version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.gongbo</groupId>
-            <artifactId>excel-import</artifactId>
+            <artifactId>easyexcel-plus-import</artifactId>
             <version>${excelplus-version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -38,9 +43,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:https://github.com/gongbox/easy-excel-plus.git</connection>
-        <developerConnection>scm:git:https://github.com/gongbox/easy-excel-plus.git</developerConnection>
-        <url>git:https://github.com/gongbox/easy-excel-plus.git</url>
+        <connection>scm:git:https://github.com/gongbox/easyexcel-plus.git</connection>
+        <developerConnection>scm:git:https://github.com/gongbox/easyexcel-plus.git</developerConnection>
+        <url>git:https://github.com/gongbox/easyexcel-plus.git</url>
     </scm>
     <developers>
         <developer>
@@ -149,4 +154,5 @@
             </distributionManagement>
         </profile>
     </profiles>
+
 </project>

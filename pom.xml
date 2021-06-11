@@ -5,16 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gongbo</groupId>
-    <artifactId>easy-excel-plus</artifactId>
+    <artifactId>easyexcel-plus</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>easy-excel-plus-common</module>
-        <module>easy-excel-plus-export</module>
-        <module>easy-excel-plus-import</module>
-        <module>easy-excel-plus-spring</module>
-        <module>easy-excel-plus-spring-boot-starter</module>
-        <module>easy-excel-plus-spring-boot-starter-test</module>
+        <module>easyexcel-plus-common</module>
+        <module>easyexcel-plus-export</module>
+        <module>easyexcel-plus-import</module>
+        <module>easyexcel-plus-spring</module>
+        <module>easyexcel-plus-spring-boot-starter</module>
+        <module>easyexcel-plus-spring-boot-starter-test</module>
     </modules>
 
     <properties>
