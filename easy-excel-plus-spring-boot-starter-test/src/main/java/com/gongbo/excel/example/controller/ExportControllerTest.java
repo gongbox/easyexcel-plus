@@ -4,6 +4,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.alibaba.excel.write.metadata.fill.FillWrapper;
+import com.gongbo.excel.example.result.Result;
+import com.gongbo.excel.example.view.ExportDemoView;
 import com.gongbo.excel.export.annotations.EnableExport;
 import com.gongbo.excel.export.core.ExportContextHolder;
 import com.gongbo.excel.export.core.handler.ExportDataConvert;
@@ -13,15 +15,12 @@ import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.fill.ExportFillData;
 import com.gongbo.excel.export.enums.ExcelType;
 import com.gongbo.excel.export.utils.ExportFormulas;
-import com.gongbo.excel.example.result.Result;
-import com.gongbo.excel.example.view.ExportDemoView;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -42,16 +41,11 @@ import java.util.stream.Stream;
  * @since 2021-01-04
  */
 @Api(tags = "export")
-@RestController
+//@RestController
 @RequestMapping(value = "/")
 @Validated
+@Deprecated
 public class ExportControllerTest {
-
-    @GetMapping(value = "test1")
-    @EnableExport
-    public Result<List<ExportDemoView>> test1() {
-        return Result.success(ExportDemoView.data());
-    }
 
     @ApiOperation("通用导出-file")
     @GetMapping(value = "commonFile")
@@ -91,10 +85,10 @@ public class ExportControllerTest {
     @EnableExport(tag = "data_convert", dataConvert = CustomExportDataConvert.class)
     public Result<List<ExportDemoView>> common() {
         if (ExportContextHolder.isExportExcel()) {
-            if ("business_dynamic_file_name".equals(ExportContextHolder.getContext().getExportParam().getExportTag())) {
+            if ("business_dynamic_file_name" .equals(ExportContextHolder.getContext().getExportParam().getExportTag())) {
                 ExportContextHolder.getContext().setFileName("业务中修改文件名称");
             }
-            if ("business_sheet_name".equals(ExportContextHolder.getContext().getExportParam().getExportTag())) {
+            if ("business_sheet_name" .equals(ExportContextHolder.getContext().getExportParam().getExportTag())) {
                 ExportContextHolder.getContext().setSheetName("业务中修改Sheet名称");
             }
         }
