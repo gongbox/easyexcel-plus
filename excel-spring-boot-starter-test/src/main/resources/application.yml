@@ -1,0 +1,15 @@
+spring:
+  profiles:
+    active: test
+  application:
+    name: export_test
+
+server:
+  port: 8888
+
+excel-plus:
+  export:
+    responseClassName: com.gongbo.excel.example.result.Result
+
+
+
