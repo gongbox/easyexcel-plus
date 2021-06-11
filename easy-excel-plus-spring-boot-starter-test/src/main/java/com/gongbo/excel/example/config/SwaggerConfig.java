@@ -25,7 +25,7 @@ public class SwaggerConfig {
                 .directModelSubstitute(Year.class, Integer.class)
                 .directModelSubstitute(Month.class, Integer.class)
                 .directModelSubstitute(YearMonth.class, String.class)
-                .groupName("export/import")
+                .groupName("EasyExcelPlus")
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.gongbo.excel.example.controller"))
@@ -35,8 +35,9 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Export")
-                .description("Export接口文档,token: 6f740a33d9e343b0a8193fe562564c44")
-                .version("1.0").build();
+                .title("EasyExcelPlus")
+                .description("EasyExcelPlus接口文档")
+                .version("1.0")
+                .build();
     }
 }

@@ -43,9 +43,15 @@ import java.util.stream.Stream;
  */
 @Api(tags = "export")
 @RestController
-@RequestMapping(value = "/export")
+@RequestMapping(value = "/")
 @Validated
 public class ExportControllerTest {
+
+    @GetMapping(value = "test1")
+    @EnableExport
+    public Result<List<ExportDemoView>> test1() {
+        return Result.success(ExportDemoView.data());
+    }
 
     @ApiOperation("通用导出-file")
     @GetMapping(value = "commonFile")

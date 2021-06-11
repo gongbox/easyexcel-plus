@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ExportConfiguration {
 
-
     @Bean
     public ResultHandler resultBuilder() {
         return new ResultHandler() {
