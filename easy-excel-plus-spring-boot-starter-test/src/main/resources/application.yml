@@ -5,7 +5,7 @@ spring:
     name: export_test
 
 server:
-  port: 8888
+  port: 80
 
 excel-plus:
   export:

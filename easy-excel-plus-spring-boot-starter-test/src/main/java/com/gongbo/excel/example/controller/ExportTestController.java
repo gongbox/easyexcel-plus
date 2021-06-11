@@ -1,133 +1,62 @@
-# EasyExcelPlus
+package com.gongbo.excel.example.controller;
 
-<p align="center">
-  为简化开发工作、提高生产率而生
-</p>
+import cn.hutool.core.util.RandomUtil;
+import com.gongbo.excel.example.result.Result;
+import com.gongbo.excel.example.view.ExportDemoView;
+import com.gongbo.excel.export.annotations.EnableExport;
+import com.gongbo.excel.export.core.ExportContextHolder;
+import com.gongbo.excel.export.core.handler.ExportDataConvert;
+import com.gongbo.excel.export.core.handler.FieldFilter;
+import com.gongbo.excel.export.core.handler.FileNameConvert;
+import com.gongbo.excel.export.entity.ExportContext;
+import com.gongbo.excel.export.entity.fill.ExportFillData;
+import com.gongbo.excel.export.enums.ExcelType;
+import com.google.common.collect.Lists;
+import io.swagger.annotations.Api;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-<p align="center">
-  <a href="https://search.maven.org/search?q=g:com.gongbo%20a:easy-excel-*">
-    <img alt="maven" src="https://img.shields.io/maven-central/v/com.baomidou/mybatis-plus.svg?style=flat-square">
-  </a>
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-  <a href="https://www.apache.org/licenses/LICENSE-2.0">
-    <img alt="code style" src="https://img.shields.io/badge/license-Apache%202-4EB1BA.svg?style=flat-square">
-  </a>
-</p>
-
-# 简介 | Intro
-
-EasyExcel 增强工具包 - 只做增强不做改变，简化导入，导出操作
-
-技术讨论 QQ 群 ： 779290098
-
-# 优点 | Advantages
-
-- **无侵入**：EasyExcelPlus 在 EasyExcel 基础上开发，只做增强，不做改变，引入 EasyExcelPlus 不会对您现有的 EasyExcel 构架产生任何影响，而且 EasyExcelPlus 支持所有 EasyExcel 原生的特性
-- **易使用**：通过注解的方式配置导出，配置简单，快速开发导出功能
-- **更简洁**：导出与查询合二为一，减少重复代码
-- **损耗小**：EasyExcelPlus 对使用性能几乎没有影响
-
-
-# Latest Version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.gongbox/easy-excel-plus.svg)](https://search.maven.org/search?q=g:com.gongbo%20a:easy-excel-plus*)
-
-``` xml
-<dependency>
-    <groupId>io.github.gongbox</groupId>
-    <artifactId>easy-excel-plus</artifactId>
-    <version>Latest Version</version>
-</dependency>
-```
-
-# 使用示例
-示例中使用的模型类如下:
-```java
-@Data
-public class ExportDemoView {
-    @ExcelProperty
-    private String text = "text";
-    @ExcelProperty
-    private Integer integerValue = 12;
-    @ExcelProperty
-    private Float floatValue = 13.0f;
-    @ExcelProperty
-    private Double doubleValue = 213.4566;
-    @ExcelProperty
-    private BigDecimal bigDecimal = BigDecimal.TEN;
-    @ExcelProperty
-    private LocalDate localDate = LocalDate.now();
-    @ExcelProperty
-    private LocalDateTime localDateTime = LocalDateTime.now();
-    @ExcelProperty
-    private Date date = new Date();
-
-    public static List<ExportDemoView> data() {
-        return Stream.generate(ExportDemoView::new)
-                .limit(new Random().nextInt(10))
-                .collect(Collectors.toList());
+@Api(tags = "export")
+@RestController
+@RequestMapping(value = "/")
+@Validated
+public class ExportTestController {
+    @GetMapping(value = "test1")
+    @EnableExport
+    public Result<List<ExportDemoView>> test1() {
+        return Result.success(ExportDemoView.data());
     }
-}
-```
-#### 配置文件
-```yaml
-server:
-  port: 80
-excel-plus:
-  export:
-    responseClassName: com.gongbo.excel.example.result.Result
-```
-下面是一个普通查询接口：
-```java
-@GetMapping(value = "test1")
-public Result<List<ExportDemoView>> test1() {
-    return Result.success(ExportDemoView.data());
-}
-```
-返回数据如下：
-***
-演示地址：http://8.129.7.25/test1
-***
-若要实现导出excel，只需要在接口上增加注解@EnableExport即可，如下所示：
-```java
-@GetMapping(value = "test1")
-@EnableExport
-public Result<List<ExportDemoView>> test1() {
-    return Result.success(ExportDemoView.data());
-}
-```
-添加该注解后，接口依然正常查询，导出时只需要添加请求参数export=excel即可，如下所示：
-***
-演示地址：http://8.129.7.25/test1?export=excel
-***
-通过使用注解的方式，我们实现了在查询的基础导出为excel，极大地简化了导出开发。
-实际中，我们可能还有很多地方需要定制，比如导出文件名，导出文件格式，根据模版导出，导出数据转换等等。
-EasyExcelPlus同样支持多种多样的自定义配置。
 
-- 导出-设置导出文件名称：
-    ```java
+    // 导出-设置导出文件名称：
     @GetMapping(value = "test2")
     @EnableExport(fileName = "文件名称")
     public Result<List<ExportDemoView>> test2() {
         return Result.success(ExportDemoView.data());
     }
-    ```
-  演示地址：http://8.129.7.25/test2?export=excel
-- 导出-动态设置文件名称：
-    ```java
+
+    //导出-动态设置文件名称：
     @GetMapping(value = "test3")
     @EnableExport(fileNameConvert = CustomFileNameConvert.class)
     public Result<List<ExportDemoView>> test3() {
         return Result.success(ExportDemoView.data());
     }
+
     public static class CustomFileNameConvert implements FileNameConvert {
         @Override
         public String apply(String fileName) {
             return LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
         }
     }
-    ```
-  演示地址：http://8.129.7.25/test3?export=excel
-  或者
-    ```java
+
     @GetMapping(value = "test4")
     @EnableExport
     public Result<List<ExportDemoView>> test4() {
@@ -136,69 +65,59 @@ EasyExcelPlus同样支持多种多样的自定义配置。
         }
         return Result.success(ExportDemoView.data());
     }
-    ```
-  演示地址：http://8.129.7.25/test4?export=excel
-- 导出-固定Sheet名称：
-    ```java
+
+    //导出-固定Sheet名称：
     @GetMapping(value = "test5")
     @EnableExport(sheetName = "Sheet0")
     public Result<List<ExportDemoView>> test5() {
         return Result.success(ExportDemoView.data());
     }
-    ```
-  演示地址：http://8.129.7.25/test5?export=excel
-- 导出-动态设置Sheet名称：
-    ```java
+
+    //导出-动态设置Sheet名称：
     @GetMapping(value = "test6")
     @EnableExport
     public Result<List<ExportDemoView>> test6() {
         if (ExportContextHolder.isExportExcel()) {
-             ExportContextHolder.getContext().setSheetName("业务中修改Sheet名称");
+            ExportContextHolder.getContext().setSheetName("业务中修改Sheet名称");
         }
         return Result.success(ExportDemoView.data());
     }
-    ```
-   演示地址：http://8.129.7.25/test6?export=excel
-- 导出到固定文件夹：
-    ```java
+
+    //导出到固定文件夹：
     @GetMapping(value = "test7")
     @EnableExport(outputPath = "D:\\WorkDir\\temp\\file")
     public Result<List<ExportDemoView>> test7() {
         return Result.success(ExportDemoView.data());
     }
-    ```
-  演示地址：http://8.129.7.25/test7?export=excel
-- 导出-字段过滤：
-    ```java
+
+    //导出-字段过滤：
     @GetMapping(value = "test8")
     @EnableExport(fieldFilter = CustomFieldFilter.class)
     public Result<List<ExportDemoView>> test8() {
         return Result.success(ExportDemoView.data());
     }
+
     public static class CustomFieldFilter implements FieldFilter {
         @Override
         public boolean predict(Field field) {
             return RandomUtil.randomBoolean();
         }
     }
-    ```
-  演示地址：http://8.129.7.25/test8?export=excel
-- 导出-设置导出文件格式：
-    ```java
+
+    //导出-设置导出文件格式：
     @GetMapping(value = "test9")
     @EnableExport(excelType = ExcelType.XLS)
     public Result<List<ExportDemoView>> test9() {
         return Result.success(ExportDemoView.data());
     }
-    ```
-  演示地址：http://8.129.7.25/test9?export=excel
-- 导出-数据转换：
-    ```java
+
+    //导出-数据转换：
     @GetMapping(value = "test10")
     @EnableExport(dataConvert = CustomExportDataConvert.class)
     public Result<List<ExportDemoView>> test10() {
         return Result.success(ExportDemoView.data());
     }
+
     public static class CustomExportDataConvert implements ExportDataConvert {
         @Override
         public List<?> convert(ExportContext exportContext, Object data) {
@@ -210,31 +129,21 @@ EasyExcelPlus同样支持多种多样的自定义配置。
             return list;
         }
     }
-    ```
-  演示地址：http://8.129.7.25/test10?export=excel
-- 导出-同一接口多种导出方式：
-    ```java
+
+    //导出-同一接口多种导出方式：
     @GetMapping(value = "test11")
     @EnableExport(tag = "xls", excelType = ExcelType.XLS)
     @EnableExport(tag = "xlsx", excelType = ExcelType.XLSX)
     public Result<List<ExportDemoView>> test11() {
         return Result.success(ExportDemoView.data());
     }
-  ```
-  同一接口可以添加多个注解，以实现支持多种导出，通过注解tag属性设置标签，导出时，需要增使用参数export_tag指定标签。
-   ***
-  演示地址：
-  ***
-  > 导出XLS：http://8.129.7.25/test11?export=excel&export_tag=xls
-  ***  
-  > 导出XLSX：http://8.129.7.25/test11?export=excel&export_tag=xlsx
-- 导出-模版导出（单个Sheet）：
-    ```java
+
     @GetMapping(value = "testTemplate1")
     @EnableExport(template = "template1.xls", dataConvert = Template1DataConvert.class)
     public Result<List<ExportDemoView>> testTemplate1() {
         return Result.success(ExportDemoView.data());
     }
+
     public static class Template1DataConvert implements ExportDataConvert {
         @Override
         public List<?> convert(ExportContext exportContext, Object data) {
@@ -256,15 +165,14 @@ EasyExcelPlus同样支持多种多样的自定义配置。
             return Lists.newArrayList(exportFillData1, exportFillData2);
         }
     }
-    ```
-  演示地址：http://8.129.7.25/testTemplate1?export=excel
-- 导出-模版导出（多个Sheet）：
-    ```java
+
+    //导出-模版导出（多个Sheet）：
     @GetMapping(value = "testTemplate2")
     @EnableExport(template = "template2.xls", dataConvert = Template2DataConvert.class)
     public Result<List<ExportDemoView>> testTemplate2() {
         return Result.success(ExportDemoView.data());
     }
+
     public static class Template2DataConvert implements ExportDataConvert {
         @Override
         public List<?> convert(ExportContext exportContext, Object data) {
@@ -288,19 +196,4 @@ EasyExcelPlus同样支持多种多样的自定义配置。
             return Lists.newArrayList(exportFillData1, exportFillData2);
         }
     }
-    ```
-   演示地址：http://8.129.7.25/testTemplate2?export=excel
-
-
-# 期望 | Futures
-
-> 欢迎提出更好的意见，帮助完善 EasyExcelPlus
-
-# 版权 | License
-
-[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
-
-# 关注我 | About Me
-
-![简书](https://www.jianshu.com/u/9d2985772d9a "程序员日记")
-
+}
