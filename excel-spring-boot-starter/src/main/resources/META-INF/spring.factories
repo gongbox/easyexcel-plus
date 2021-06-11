@@ -1,6 +1,6 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.gongbo.excel.autoexport.advise.ExportAdvise,\
-com.gongbo.excel.autoexport.config.ExportProperties,\
+com.gongbo.excel.export.advise.ExportAdvise,\
+com.gongbo.excel.export.config.ExportProperties,\
 com.gongbo.excel.imports.advise.ImportAdvise,\
 com.gongbo.excel.imports.config.ImportConfig,\
 com.gongbo.excel.ExportPropertiesConfiguration

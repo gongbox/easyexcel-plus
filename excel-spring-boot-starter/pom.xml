@@ -21,15 +21,18 @@
             <groupId>com.gongbo</groupId>
             <artifactId>excel-export</artifactId>
             <version>${excelplus-version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.gongbo</groupId>
             <artifactId>excel-import</artifactId>
             <version>${excelplus-version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

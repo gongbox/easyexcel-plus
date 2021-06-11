@@ -21,10 +21,10 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <spring.version>5.3.6</spring.version>
-        <spring-boot.version>2.3.6.RELEASE</spring-boot.version>
+        <spring-boot.version>2.4.5</spring-boot.version>
         <easyexcel.version>2.2.8</easyexcel.version>
         <swagger.version>2.9.2</swagger.version>
-        <springboot.version>2.3.6.RELEASE</springboot.version>
+        <lombok.version>1.18.20</lombok.version>
 
         <excelplus-version>1.0-SNAPSHOT</excelplus-version>
     </properties>
@@ -66,6 +66,7 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>4.0.1</version>
             </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>easyexcel</artifactId>
@@ -74,14 +75,13 @@
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
+                <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-autoconfigure</artifactId>
-                <version>${springboot.version}</version>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
@@ -100,6 +100,7 @@
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${swagger.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-core</artifactId>
@@ -113,7 +114,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
 
