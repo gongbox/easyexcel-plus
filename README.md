@@ -33,7 +33,7 @@ EasyExcel 增强工具包 - 只做增强不做改变，简化导入，导出操�
 ``` xml
 <dependency>
     <groupId>io.github.gongbox</groupId>
-    <artifactId>easyexcel-plus</artifactId>
+    <artifactId>easyexcel-plus-boot-starter</artifactId>
     <version>Latest Version</version>
 </dependency>
 ```
