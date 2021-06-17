@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easyexcel-plus</artifactId>
+        <artifactId>easyexcel-plus-root</artifactId>
         <groupId>io.github.gongbox</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -19,13 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>io.github.gongbox</groupId>
-            <artifactId>easyexcel-plus-export</artifactId>
-            <version>${excelplus-version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.github.gongbox</groupId>
-            <artifactId>easyexcel-plus-import</artifactId>
+            <artifactId>easyexcel-plus</artifactId>
             <version>${excelplus-version}</version>
             <scope>compile</scope>
         </dependency>

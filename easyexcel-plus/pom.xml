@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>easyexcel-plus</artifactId>
+        <artifactId>easyexcel-plus-root</artifactId>
         <groupId>io.github.gongbox</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easyexcel-plus-spring</artifactId>
+    <artifactId>easyexcel-plus</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.gongbox</groupId>
-    <artifactId>easyexcel-plus</artifactId>
+    <artifactId>easyexcel-plus-root</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <modules>
         <module>easyexcel-plus-common</module>
         <module>easyexcel-plus-export</module>
         <module>easyexcel-plus-import</module>
-        <module>easyexcel-plus-spring</module>
+        <module>easyexcel-plus</module>
         <module>easyexcel-plus-spring-boot-starter</module>
         <module>easyexcel-plus-spring-boot-starter-test</module>
     </modules>
@@ -27,7 +27,7 @@
         <swagger.version>2.9.2</swagger.version>
         <lombok.version>1.18.20</lombok.version>
 
-        <excelplus-version>1.0.0</excelplus-version>
+        <excelplus-version>1.0.1</excelplus-version>
     </properties>
 
     <dependencyManagement>
