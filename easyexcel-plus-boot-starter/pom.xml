@@ -5,11 +5,11 @@
     <parent>
         <artifactId>easyexcel-plus-root</artifactId>
         <groupId>io.github.gongbox</groupId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>easyexcel-plus-spring-boot-starter</artifactId>
+    <artifactId>easyexcel-plus-boot-starter</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -148,5 +148,4 @@
             </distributionManagement>
         </profile>
     </profiles>
-
 </project>
