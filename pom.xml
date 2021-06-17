@@ -7,7 +7,7 @@
     <groupId>io.github.gongbox</groupId>
     <artifactId>easyexcel-plus-root</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.2</version>
+    <version>1.0</version>
     <modules>
         <module>easyexcel-plus-common</module>
         <module>easyexcel-plus-export</module>
@@ -27,7 +27,7 @@
         <swagger.version>2.9.2</swagger.version>
         <lombok.version>1.18.20</lombok.version>
 
-        <excelplus-version>1.0.2</excelplus-version>
+        <excelplus.version>1.0.3</excelplus.version>
     </properties>
 
     <dependencyManagement>

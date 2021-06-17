@@ -5,11 +5,12 @@
     <parent>
         <artifactId>easyexcel-plus-root</artifactId>
         <groupId>io.github.gongbox</groupId>
-        <version>1.0.2</version>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>easyexcel-plus-boot-starter-test</artifactId>
+    <version>${excelplus.version}</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -20,7 +21,7 @@
         <dependency>
             <groupId>io.github.gongbox</groupId>
             <artifactId>easyexcel-plus-boot-starter</artifactId>
-            <version>1.0.2</version>
+            <version>${excelplus.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
