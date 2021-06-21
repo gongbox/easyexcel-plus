@@ -287,8 +287,38 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
     }
     ```
    >演示地址：http://8.129.7.25/testTemplate2?export=excel
-
-
+- **导入-模板下载**
+    ```java
+    @GetMapping(value = "test5")
+    @EnableImport(modelClass = ExportDemoView.class)
+    public void test5() {
+    }
+   ```
+  >演示地址：
+  > 导入-模版下载：http://8.129.7.25/import/test5?import=template
+- **导入-导入**
+    ```java
+    @PostMapping(value = "test4")
+    @EnableImport
+    public Result<ExportDemoView[]> test4(@RequestBody(required = false) ExportDemoView[] param) {
+        return Result.success(param);
+    }
+   ```
+  ![img_1.png](img_1.png)
+  >演示地址：
+  > 导入-模版下载：http://8.129.7.25/import/test4?import=excel
+- **导入-模板下载、数据导入**
+    ```java
+    @RequestMapping(value = "test1", method = {RequestMethod.GET, RequestMethod.POST})
+    @EnableImport
+    public Result<ExportDemoView[]> test1(@RequestBody(required = false) ExportDemoView[] param) {
+        return Result.success(param);
+    }
+   ```
+  ![img_1.png](img_1.png)
+  >演示地址： 导入-模版下载：http://8.129.7.25/import/test1?import=template
+    
+  >演示地址： 导入-数组参数：http://8.129.7.25/import/test1?import=excel
 # 期望 | Futures
 
 > 欢迎提出更好的意见，帮助完善 EasyExcelPlus

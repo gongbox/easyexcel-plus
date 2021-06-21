@@ -6,10 +6,7 @@ import com.gongbo.excel.imports.annotations.EnableImport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -49,4 +46,16 @@ public class ImportControllerTest {
         return Result.success(param);
     }
 
+    @ApiOperation("test4")
+    @PostMapping(value = "test4")
+    @EnableImport
+    public Result<ExportDemoView[]> test4(@RequestBody(required = false) ExportDemoView[] param) {
+        return Result.success(param);
+    }
+
+    @ApiOperation("test5")
+    @GetMapping(value = "test5")
+    @EnableImport(modelClass = ExportDemoView.class)
+    public void test5() {
+    }
 }

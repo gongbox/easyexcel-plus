@@ -1,11 +1,11 @@
 package com.gongbo.excel.imports.core;
 
+import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.imports.annotations.EnableImport;
 import com.gongbo.excel.imports.entity.ImportContext;
 import com.gongbo.excel.imports.entity.ImportParam;
 import com.gongbo.excel.imports.exception.NotSupportImportException;
 import com.gongbo.excel.imports.utils.ImportUtils;
-import com.gongbo.excel.common.result.ResultHandler;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -26,9 +26,10 @@ public class ImportHelper {
         }
 
         //目标参数位置
-        Integer argIndex = ImportUtils.getImportTargetArgIndex(targetMethod);
+        boolean mustExists = !importParam.isTemplate() || autoEnableImport.modelClass() == Object.class;
+        Integer argIndex = ImportUtils.getImportTargetArgIndex(targetMethod, mustExists);
         //目标参数类型
-        Class<?> modelContainerClass = ImportUtils.getModelContainerClass(targetMethod, argIndex);
+        Class<?> modelContainerClass = argIndex == null ? null : ImportUtils.getModelContainerClass(targetMethod, argIndex);
         //导入数据模型类
         Class<?> modelClass;
         if (autoEnableImport.modelClass() != Object.class) {

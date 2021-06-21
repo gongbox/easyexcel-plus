@@ -15,7 +15,7 @@ public class ImportUtils {
     /**
      * 获取参数位置
      */
-    public static Integer getImportTargetArgIndex(Method method) {
+    public static Integer getImportTargetArgIndex(Method method, boolean mustExists) {
         int parameterCount = method.getParameterCount();
 
         int argIndex = -1;
@@ -38,7 +38,10 @@ public class ImportUtils {
 
         //检查
         if (argIndex < 0) {
-            throw new IllegalArgumentException("没有找到对应参数位置");
+            if (mustExists) {
+                throw new IllegalArgumentException("没有找到对应参数位置");
+            }
+            return null;
         }
 
         if (argIndex >= method.getParameterCount()) {
