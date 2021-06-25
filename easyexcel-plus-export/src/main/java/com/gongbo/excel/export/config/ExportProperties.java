@@ -29,7 +29,7 @@ public class ExportProperties {
     /**
      * 模板文件路径
      */
-    private String templatePath = "classpath:exportTemplates/";
+    private String templateDir = "";
 
     /**
      * 公式开始前缀

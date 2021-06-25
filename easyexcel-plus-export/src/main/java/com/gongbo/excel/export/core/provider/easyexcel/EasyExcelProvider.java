@@ -11,26 +11,23 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
+import com.gongbo.excel.common.utils.CollectionUtil;
+import com.gongbo.excel.common.utils.StringPool;
+import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.export.core.provider.ExportProvider;
 import com.gongbo.excel.export.core.provider.easyexcel.overrides.MyExcelWriteFillExecutor;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.ExportFieldInfo;
 import com.gongbo.excel.export.entity.fill.ExportFillData;
 import com.gongbo.excel.export.exception.FillKeyNotFoundException;
-import com.gongbo.excel.common.utils.CollectionUtil;
-import com.gongbo.excel.common.utils.StringPool;
-import com.gongbo.excel.common.utils.StringUtil;
+import com.gongbo.excel.export.utils.ExportUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.*;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -79,15 +76,7 @@ public class EasyExcelProvider implements ExportProvider {
 
         boolean fillTemplate = StringUtil.isNotEmpty(exportContext.getTemplate());
         if (fillTemplate) {
-            String templatePath = exportContext.getExportProperties().getTemplatePath();
-            InputStream inputStream;
-            if (templatePath.startsWith("classpath:")) {
-                ClassPathResource resource = new ClassPathResource(templatePath.replaceFirst("classpath:", "") + exportContext.getTemplate());
-                inputStream = resource.getInputStream();
-            } else {
-                inputStream = Files.newInputStream(Paths.get(templatePath));
-            }
-            excelWriterBuilder = excelWriterBuilder.withTemplate(inputStream);
+            excelWriterBuilder = excelWriterBuilder.withTemplate(ExportUtils.getTemplateInputStream(exportContext));
         }
 
         //需要保留的字段名

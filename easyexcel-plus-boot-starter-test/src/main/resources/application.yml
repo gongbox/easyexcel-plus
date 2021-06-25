@@ -10,6 +10,7 @@ server:
 excel-plus:
   export:
     responseClassName: com.gongbo.excel.example.result.Result
+    templateDir: classpath:exportTemplates/
 
 
 

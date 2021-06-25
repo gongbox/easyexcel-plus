@@ -5,12 +5,11 @@ import com.gongbo.excel.export.core.ExportHelper;
 import com.gongbo.excel.export.entity.ExportContext;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileUrlResource;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -21,6 +20,9 @@ import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExportUtils {
+
+    public static final String CLASSPATH_PATH_PREFIX = "classpath:";
+    public static final String FILE_PATH_PREFIX = "file:";
 
     /**
      * 获取方法返回模型类
@@ -107,5 +109,32 @@ public class ExportUtils {
             ExportHelper.setDownloadResponseHeaders(response, exportContext);
             return response.getOutputStream();
         }
+    }
+
+    /**
+     * @param exportContext
+     * @return
+     * @throws IOException
+     */
+    public static InputStream getTemplateInputStream(ExportContext exportContext) throws IOException {
+        String template = exportContext.getTemplate();
+        String templatePath;
+        if (template.startsWith(CLASSPATH_PATH_PREFIX) || template.startsWith(FILE_PATH_PREFIX)) {
+            templatePath = template;
+        } else {
+            templatePath = exportContext.getExportProperties().getTemplateDir() + "/" + template;
+        }
+
+        InputStream inputStream;
+        if (templatePath.startsWith(CLASSPATH_PATH_PREFIX)) {
+            ClassPathResource resource = new ClassPathResource(templatePath.replaceFirst(CLASSPATH_PATH_PREFIX, ""));
+            inputStream = resource.getInputStream();
+        } else if (templatePath.startsWith(FILE_PATH_PREFIX)) {
+            FileUrlResource fileUrlResource = new FileUrlResource(templatePath.replaceFirst(FILE_PATH_PREFIX, ""));
+            inputStream = fileUrlResource.getInputStream();
+        } else {
+            inputStream = Files.newInputStream(Paths.get(templatePath));
+        }
+        return inputStream;
     }
 }
