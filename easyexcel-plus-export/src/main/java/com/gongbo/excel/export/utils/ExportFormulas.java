@@ -12,6 +12,11 @@ public class ExportFormulas {
     private static final String AVERAGE_FORMULA_FORMAT = "=IF(ISERROR(AVERAGE(%s:%s)),\"\",AVERAGE(%s:%s))";
 
     /**
+     * 求和公式
+     */
+    private static final String SUM_FORMULA_FORMAT = "=IF(ISERROR(SUM(%s:%s)),\"\",SUM(%s:%s))";
+
+    /**
      * 生成求平均值公式
      *
      * @param column 所在列
@@ -37,6 +42,20 @@ public class ExportFormulas {
         String rowEnd = row + end;
 
         return String.format(AVERAGE_FORMULA_FORMAT, rowStart, rowEnd, rowStart, rowEnd);
+    }
+
+    /**
+     * 生成求和值公式
+     *
+     * @param column 所在列
+     * @param start  行起始坐标
+     * @param end    行结束坐标
+     */
+    public static String sumColumnFormula(String column, int start, int end) {
+        String columnStart = column + start;
+        String columnEnd = column + end;
+
+        return String.format(SUM_FORMULA_FORMAT, columnStart, columnEnd, columnStart, columnEnd);
     }
 
 }

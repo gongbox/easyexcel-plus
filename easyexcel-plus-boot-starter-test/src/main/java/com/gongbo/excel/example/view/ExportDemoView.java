@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -48,7 +47,7 @@ public class ExportDemoView {
 
     public static List<ExportDemoView> data() {
         return Stream.generate(ExportDemoView::new)
-                .limit(new Random().nextInt(10))
+                .limit(RandomUtil.randomInt(1, 20))
                 .collect(Collectors.toList());
     }
 }

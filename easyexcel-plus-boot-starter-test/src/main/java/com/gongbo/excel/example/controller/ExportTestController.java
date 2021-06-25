@@ -1,6 +1,10 @@
 package com.gongbo.excel.example.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.excel.write.metadata.fill.FillConfig;
+import com.alibaba.excel.write.metadata.fill.FillWrapper;
+import com.gongbo.excel.common.utils.Times;
 import com.gongbo.excel.example.result.Result;
 import com.gongbo.excel.example.view.ExportDemoView;
 import com.gongbo.excel.export.annotations.EnableExport;
@@ -21,32 +25,40 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Api(tags = "export")
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "/export")
 @Validated
 public class ExportTestController {
-    @GetMapping(value = "test1")
+    /**
+     *
+     */
+    @GetMapping(value = "test-normal")
     @EnableExport
-    public Result<List<ExportDemoView>> test1() {
+    public Result<List<ExportDemoView>> testNormal() {
         return Result.success(ExportDemoView.data());
     }
 
-    // 导出-设置导出文件名称：
-    @GetMapping(value = "test2")
+    /**
+     * 导出-设置导出文件名称
+     */
+    @GetMapping(value = "test-fileName")
     @EnableExport(fileName = "文件名称")
-    public Result<List<ExportDemoView>> test2() {
+    public Result<List<ExportDemoView>> testFilename() {
         return Result.success(ExportDemoView.data());
     }
 
-    //导出-动态设置文件名称：
-    @GetMapping(value = "test3")
+    /**
+     * 导出-动态设置文件名称
+     */
+    @GetMapping(value = "test-fileName-convert")
     @EnableExport(fileNameConvert = CustomFileNameConvert.class)
-    public Result<List<ExportDemoView>> test3() {
+    public Result<List<ExportDemoView>> testFileNameConvert() {
         return Result.success(ExportDemoView.data());
     }
 
@@ -57,43 +69,54 @@ public class ExportTestController {
         }
     }
 
-    @GetMapping(value = "test4")
+    /**
+     *
+     */
+    @GetMapping(value = "test-fileName-business")
     @EnableExport
-    public Result<List<ExportDemoView>> test4() {
+    public Result<List<ExportDemoView>> testFileNameBusiness() {
         if (ExportContextHolder.isExportExcel()) {
             ExportContextHolder.getContext().setFileName("动态文件名称");
         }
         return Result.success(ExportDemoView.data());
     }
 
-    //导出-固定Sheet名称：
-    @GetMapping(value = "test5")
+    /**
+     * 导出-固定Sheet名称
+     */
+    @GetMapping(value = "test-sheetName")
     @EnableExport(sheetName = "Sheet0")
-    public Result<List<ExportDemoView>> test5() {
+    public Result<List<ExportDemoView>> testSheetName() {
         return Result.success(ExportDemoView.data());
     }
 
-    //导出-动态设置Sheet名称：
-    @GetMapping(value = "test6")
+    /**
+     * 导出-动态设置Sheet名称
+     */
+    @GetMapping(value = "test-sheetName-business")
     @EnableExport
-    public Result<List<ExportDemoView>> test6() {
+    public Result<List<ExportDemoView>> testSheetNameBusiness() {
         if (ExportContextHolder.isExportExcel()) {
             ExportContextHolder.getContext().setSheetName("业务中修改Sheet名称");
         }
         return Result.success(ExportDemoView.data());
     }
 
-    //导出到固定文件夹：
-    @GetMapping(value = "test7")
+    /**
+     * 导出到固定文件夹
+     */
+    @GetMapping(value = "test-out-path")
     @EnableExport(outputPath = "D:\\WorkDir\\temp\\file")
-    public Result<List<ExportDemoView>> test7() {
+    public Result<List<ExportDemoView>> testOutPath() {
         return Result.success(ExportDemoView.data());
     }
 
-    //导出-字段过滤：
-    @GetMapping(value = "test8")
+    /**
+     * 导出-字段过滤
+     */
+    @GetMapping(value = "test-filter")
     @EnableExport(fieldFilter = CustomFieldFilter.class)
-    public Result<List<ExportDemoView>> test8() {
+    public Result<List<ExportDemoView>> testFilter() {
         return Result.success(ExportDemoView.data());
     }
 
@@ -104,17 +127,21 @@ public class ExportTestController {
         }
     }
 
-    //导出-设置导出文件格式：
-    @GetMapping(value = "test9")
+    /**
+     * 导出-设置导出文件格式
+     */
+    @GetMapping(value = "test-excelType")
     @EnableExport(excelType = ExcelType.XLS)
-    public Result<List<ExportDemoView>> test9() {
+    public Result<List<ExportDemoView>> testExcelType() {
         return Result.success(ExportDemoView.data());
     }
 
-    //导出-数据转换：
-    @GetMapping(value = "test10")
+    /**
+     * 导出-数据转换
+     */
+    @GetMapping(value = "test-dataConvert")
     @EnableExport(dataConvert = CustomExportDataConvert.class)
-    public Result<List<ExportDemoView>> test10() {
+    public Result<List<ExportDemoView>> testDataConvert() {
         return Result.success(ExportDemoView.data());
     }
 
@@ -130,21 +157,35 @@ public class ExportTestController {
         }
     }
 
-    //导出-同一接口多种导出方式：
-    @GetMapping(value = "test11")
+    /**
+     * 导出-同一接口多种导出方式
+     */
+    @GetMapping(value = "test-tag")
     @EnableExport(tag = "xls", excelType = ExcelType.XLS)
     @EnableExport(tag = "xlsx", excelType = ExcelType.XLSX)
-    public Result<List<ExportDemoView>> test11() {
+    public Result<List<ExportDemoView>> testTag() {
         return Result.success(ExportDemoView.data());
     }
 
-    @GetMapping(value = "testTemplate1")
-    @EnableExport(template = "template1.xls", dataConvert = Template1DataConvert.class)
-    public Result<List<ExportDemoView>> testTemplate1() {
+    /**
+     * 导出-简单模版导出
+     */
+    @GetMapping(value = "testTemplateSimple")
+    @EnableExport(template = "template-simply.xlsx")
+    public Result<List<ExportDemoView>> testTemplateSimple() {
         return Result.success(ExportDemoView.data());
     }
 
-    public static class Template1DataConvert implements ExportDataConvert {
+    /**
+     * 导出-单个Sheet模版导出
+     */
+    @GetMapping(value = "testTemplateSingleSheet")
+    @EnableExport(template = "template-single-sheet.xlsx", dataConvert = TemplateSingleSheetDataConvert.class)
+    public Result<List<ExportDemoView>> testTemplateSingleSheet() {
+        return Result.success(ExportDemoView.data());
+    }
+
+    public static class TemplateSingleSheetDataConvert implements ExportDataConvert {
         @Override
         public List<?> convert(ExportContext exportContext, Object data) {
             Result<?> responseEntity = (Result<?>) data;
@@ -154,10 +195,8 @@ public class ExportTestController {
                     .build();
 
             Map<String, String> map = new HashMap<>();
-
             map.put("name", "名称");
-            map.put("date_start", LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
-            map.put("date_end", LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+            map.put("date", LocalDate.now().format(Times.Formatter.DEFAULT_DATE));
             ExportFillData exportFillData2 = ExportFillData.builder()
                     .data(map)
                     .build();
@@ -167,30 +206,64 @@ public class ExportTestController {
     }
 
     //导出-模版导出（多个Sheet）：
-    @GetMapping(value = "testTemplate2")
-    @EnableExport(template = "template2.xls", dataConvert = Template2DataConvert.class)
-    public Result<List<ExportDemoView>> testTemplate2() {
+    @GetMapping(value = "testTemplateMuchSheet")
+    @EnableExport(template = "template-much-sheet.xlsx", dataConvert = TemplateMuchSheetDataConvert.class)
+    public Result<List<ExportDemoView>> testTemplateMuchSheet() {
         return Result.success(ExportDemoView.data());
     }
 
-    public static class Template2DataConvert implements ExportDataConvert {
+    public static class TemplateMuchSheetDataConvert implements ExportDataConvert {
         @Override
         public List<?> convert(ExportContext exportContext, Object data) {
             Result<?> responseEntity = (Result<?>) data;
 
-            ExportFillData exportFillData1 = ExportFillData.builder()
-                    .sheetName("Sheet1")
-                    .data(responseEntity.getData())
-                    .build();
-
             Map<String, String> map = new HashMap<>();
 
             map.put("name", "名称");
-            map.put("date_start", LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
-            map.put("date_end", LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+            map.put("date", LocalDate.now().format(Times.Formatter.DEFAULT_DATE));
             ExportFillData exportFillData2 = ExportFillData.builder()
-                    .sheetNo(0)
+                    .sheetName("Sheet1")
                     .data(map)
+                    .build();
+
+            ExportFillData exportFillData1 = ExportFillData.builder()
+                    .sheetName("Sheet2")
+                    .data(responseEntity.getData())
+                    .build();
+
+            return Lists.newArrayList(exportFillData1, exportFillData2);
+        }
+    }
+
+    /**
+     * 导出-模版-公式
+     * 只支持xls格式
+     */
+    @GetMapping(value = "testTemplateFormula")
+    @EnableExport(template = "template-formula.xls", dataConvert = TemplateFormulaDataConvert.class)
+    public Result<List<ExportDemoView>> testTemplateFormula() {
+        return Result.success(ExportDemoView.data());
+    }
+
+    public static class TemplateFormulaDataConvert implements ExportDataConvert {
+        @Override
+        public List<?> convert(ExportContext exportContext, Object data) {
+            Result<?> responseEntity = (Result<?>) data;
+            Collection<?> list = (Collection<?>) responseEntity.getData();
+
+            ExportFillData exportFillData1 = ExportFillData.builder()
+                    .fillConfig(FillConfig.builder().forceNewRow(true).build())
+                    .data(new FillWrapper("data", list))
+                    .build();
+
+            int start = 1;
+            int end = start + (CollUtil.isEmpty(list) ? 0 : list.size() - 1);
+
+            Map<String, Object> constantMap2 = new HashMap<>();
+            constantMap2.put("data_end", end);
+
+            ExportFillData exportFillData2 = ExportFillData.builder()
+                    .data(constantMap2)
                     .build();
 
             return Lists.newArrayList(exportFillData1, exportFillData2);
