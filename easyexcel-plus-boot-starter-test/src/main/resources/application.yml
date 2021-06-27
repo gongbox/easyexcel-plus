@@ -1,11 +1,6 @@
 spring:
-  profiles:
-    active: test
   application:
-    name: export_test
-
-server:
-  port: 80
+    name: export_demo
 
 excel-plus:
   export:

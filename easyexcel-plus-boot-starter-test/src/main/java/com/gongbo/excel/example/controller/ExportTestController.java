@@ -36,7 +36,7 @@ import java.util.Map;
 @Validated
 public class ExportTestController {
     /**
-     *
+     * 导出-简单导出
      */
     @GetMapping(value = "test-normal")
     @EnableExport
@@ -170,7 +170,7 @@ public class ExportTestController {
     /**
      * 导出-简单模版导出
      */
-    @GetMapping(value = "testTemplateSimple")
+    @GetMapping(value = "test-template-simple")
     @EnableExport(template = "template-simply.xlsx")
     public Result<List<ExportDemoView>> testTemplateSimple() {
         return Result.success(ExportDemoView.data());
@@ -179,7 +179,7 @@ public class ExportTestController {
     /**
      * 导出-单个Sheet模版导出
      */
-    @GetMapping(value = "testTemplateSingleSheet")
+    @GetMapping(value = "test-template-single-sheet")
     @EnableExport(template = "template-single-sheet.xlsx", dataConvert = TemplateSingleSheetDataConvert.class)
     public Result<List<ExportDemoView>> testTemplateSingleSheet() {
         return Result.success(ExportDemoView.data());
@@ -206,7 +206,7 @@ public class ExportTestController {
     }
 
     //导出-模版导出（多个Sheet）：
-    @GetMapping(value = "testTemplateMuchSheet")
+    @GetMapping(value = "test-template-much-sheet")
     @EnableExport(template = "template-much-sheet.xlsx", dataConvert = TemplateMuchSheetDataConvert.class)
     public Result<List<ExportDemoView>> testTemplateMuchSheet() {
         return Result.success(ExportDemoView.data());
@@ -239,7 +239,7 @@ public class ExportTestController {
      * 导出-模版-公式
      * 只支持xls格式
      */
-    @GetMapping(value = "testTemplateFormula")
+    @GetMapping(value = "test-template-formula")
     @EnableExport(template = "template-formula.xls", dataConvert = TemplateFormulaDataConvert.class)
     public Result<List<ExportDemoView>> testTemplateFormula() {
         return Result.success(ExportDemoView.data());
