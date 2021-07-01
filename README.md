@@ -106,13 +106,13 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
 - 配置文件:
   ```yaml
   spring:
-  application:
-  name: export_demo
-  
-  excel-plus:
-  export:
-  responseClassName: com.gongbo.excel.example.result.Result
-  templateDir: classpath:exportTemplates/
+    application:
+      name: export_test
+
+  easyexcel-plus:
+    export:
+      response-class-name: com.gongbo.excel.example.result.Result
+      template-dir: classpath:exportTemplates/
   ```
 ### 使用
 

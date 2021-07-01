@@ -7,7 +7,7 @@
     <groupId>io.github.gongbox</groupId>
     <artifactId>easyexcel-plus-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.7</version>
     <name>easyexcel-plus</name>
     <description>easyexcel-plus</description>
     <url>https://github.com/gongbox/easyexcel-plus</url>
@@ -17,7 +17,7 @@
         <module>easyexcel-plus-import</module>
         <module>easyexcel-plus</module>
         <module>easyexcel-plus-boot-starter</module>
-<!--        <module>easyexcel-plus-boot-starter-test</module>-->
+        <module>easyexcel-plus-boot-starter-test</module>
     </modules>
 
     <properties>
@@ -29,8 +29,6 @@
         <easyexcel.version>2.2.8</easyexcel.version>
         <swagger.version>2.9.2</swagger.version>
         <lombok.version>1.18.20</lombok.version>
-
-        <excelplus.version>1.0.0-SNAPSHOT</excelplus.version>
     </properties>
 
     <dependencyManagement>
@@ -227,6 +225,14 @@
                             <tagNameFormat>v@{project.version}</tagNameFormat>
                             <autoVersionSubmodules>true</autoVersionSubmodules>
                             <pushChanges>false</pushChanges>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>versions-maven-plugin</artifactId>
+                        <version>2.3</version>
+                        <configuration>
+                            <generateBackupPoms>false</generateBackupPoms>
                         </configuration>
                     </plugin>
                 </plugins>

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>easyexcel-plus-parent</artifactId>
         <groupId>io.github.gongbox</groupId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>io.github.gongbox</groupId>
             <artifactId>easyexcel-plus-boot-starter</artifactId>
-            <version>1.0.6</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
