@@ -39,6 +39,5 @@ public class ExportProperties {
     /**
      * 默认导出excel格式
      */
-    private ExcelTypeEnum defaultExcelType = ExcelTypeEnum.XLSX;
-
+    private String defaultExcelType = "xlsx";
 }

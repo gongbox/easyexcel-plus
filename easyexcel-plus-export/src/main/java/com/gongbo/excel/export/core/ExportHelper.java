@@ -1,6 +1,10 @@
 package com.gongbo.excel.export.core;
 
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.gongbo.excel.common.result.ResultHandler;
+import com.gongbo.excel.common.utils.CollectionUtil;
+import com.gongbo.excel.common.utils.ReflectUtil;
+import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.export.annotations.EnableExport;
 import com.gongbo.excel.export.annotations.EnableExports;
 import com.gongbo.excel.export.config.ExportProperties;
@@ -14,10 +18,6 @@ import com.gongbo.excel.export.enums.ExcelType;
 import com.gongbo.excel.export.exception.ExportFailedException;
 import com.gongbo.excel.export.exception.NotSupportExportException;
 import com.gongbo.excel.export.utils.ExportUtils;
-import com.gongbo.excel.common.result.ResultHandler;
-import com.gongbo.excel.common.utils.CollectionUtil;
-import com.gongbo.excel.common.utils.ReflectUtil;
-import com.gongbo.excel.common.utils.StringUtil;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -183,7 +183,12 @@ public class ExportHelper {
             return enableExport.excelType().getExcelTypeEnum();
         }
         if (StringUtil.isEmpty(enableExport.template())) {
-            return exportProperties.getDefaultExcelType();
+            String defaultExcelType = exportProperties.getDefaultExcelType();
+            if ("xls".equalsIgnoreCase(defaultExcelType)) {
+                return ExcelTypeEnum.XLS;
+            } else {
+                return ExcelTypeEnum.XLSX;
+            }
         }
         if (enableExport.template().endsWith(ExcelTypeEnum.XLSX.getValue())) {
             return ExcelTypeEnum.XLSX;

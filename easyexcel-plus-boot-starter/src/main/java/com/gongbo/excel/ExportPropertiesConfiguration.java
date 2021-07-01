@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class ExportPropertiesConfiguration {
 
     @Bean
-    @ConfigurationProperties("excel-plus.export")
+    @ConfigurationProperties("easyexcel-plus.export")
     @ConditionalOnMissingBean
     public ExportProperties exportProperties() {
         return new ExportProperties();
