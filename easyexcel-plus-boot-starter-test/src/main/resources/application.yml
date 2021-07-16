@@ -1,6 +1,9 @@
 spring:
   application:
-    name: export_test
+    name: export_demo
+
+server:
+  port: 80
 
 easyexcel-plus:
   export:
