@@ -9,7 +9,7 @@ public class ExportFailedException extends RuntimeException {
      *
      */
     public ExportFailedException() {
-        super("导出失败");
+        super("export error");
     }
 
     /**

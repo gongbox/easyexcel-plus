@@ -9,7 +9,7 @@ public class ImportFailedException extends RuntimeException {
      *
      */
     public ImportFailedException() {
-        super("导出失败");
+        super("import error");
     }
 
     /**

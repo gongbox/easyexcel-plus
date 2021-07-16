@@ -67,7 +67,7 @@ public class ExportAdvise {
             //执行导出
             return doExport(exportParam, joinPoint, targetMethod, response);
         } catch (Exception e) {
-            log.error("导出错误", e);
+            log.error("export error", e);
             return resultHandler.error(e);
         }
     }
@@ -95,7 +95,7 @@ public class ExportAdvise {
                 //执行请求，获取请求返回值
                 Object result = joinPoint.proceed();
                 if (!(resultHandler.check(result))) {
-                    throw new NotSupportExportException(MessageFormat.format("请求接口方法返回类型必须是{0}类型", exportProperties.getResponseClassName()));
+                    throw new NotSupportExportException(MessageFormat.format("request api return type must be class:{0}", exportProperties.getResponseClassName()));
                 } else {
                     return responseExcel(exportContext, result, response);
                 }

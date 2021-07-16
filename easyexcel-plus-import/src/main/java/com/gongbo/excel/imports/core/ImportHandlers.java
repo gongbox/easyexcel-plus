@@ -86,7 +86,7 @@ public class ImportHandlers {
                         Collection<Object> collection = (Collection<Object>) containerClass.newInstance();
                         return data.stream().collect(Collectors.toCollection(() -> collection));
                     } catch (InstantiationException | IllegalAccessException e) {
-                        log.error("导入实例化数据类型失败", e);
+                        log.error("import instance collection failed", e);
                     }
                 }
             }

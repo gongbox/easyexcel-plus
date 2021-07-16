@@ -22,7 +22,7 @@ public class ImportHelper {
         EnableImport autoEnableImport = targetMethod.getAnnotation(EnableImport.class);
         //检查是否支持导入
         if (autoEnableImport == null) {
-            throw new NotSupportImportException(MessageFormat.format("该方法[{0}]不支持导入，若要开启导入，请在对应请求方法上配置EnableImport注解开启导入", targetMethod.getName()));
+            throw new NotSupportImportException(MessageFormat.format("this method:{0} not support import, to enable import, please configure EnableImport annotation on the request method to enable import", targetMethod.getName()));
         }
 
         //目标参数位置
@@ -38,7 +38,7 @@ public class ImportHelper {
             modelClass = ImportUtils.getModelClass(targetMethod, argIndex);
 
             if (modelClass == null) {
-                throw new IllegalArgumentException("无法提取到导入模型参数，请检查导入方法或在EnableImport注解上添加modelClass属性！");
+                throw new IllegalArgumentException("unable to get the import model class, please check the import method or add the modelClass attribute to the EnableImport annotation!");
             }
         }
 
