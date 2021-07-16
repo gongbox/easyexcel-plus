@@ -72,16 +72,11 @@ public class EasyExcelProvider implements ExportProvider {
         if (data == null) {
             data = Collections.emptyList();
         }
-        boolean fillTemplate = StringUtil.isNotEmpty(exportContext.getTemplate());
-        InputStream templateInputStream = null;
-        if (fillTemplate) {
-            templateInputStream = ExportUtils.getTemplateInputStream(exportContext);
-        }
-
         ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(outputStream, exportContext.getModelClass());
 
+        boolean fillTemplate = StringUtil.isNotEmpty(exportContext.getTemplate());
         if (fillTemplate) {
-            excelWriterBuilder = excelWriterBuilder.withTemplate(templateInputStream);
+            excelWriterBuilder = excelWriterBuilder.withTemplate(ExportUtils.getTemplateInputStream(exportContext));
         }
 
         //需要保留的字段名

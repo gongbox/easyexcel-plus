@@ -68,7 +68,7 @@ public class ExportAdvise {
             return doExport(exportParam, joinPoint, targetMethod, response);
         } catch (Exception e) {
             log.error("export error", e);
-            return resultHandler.error(e);
+            throw e;
         }
     }
 

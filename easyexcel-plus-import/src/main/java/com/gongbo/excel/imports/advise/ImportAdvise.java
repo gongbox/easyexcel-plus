@@ -75,7 +75,7 @@ public class ImportAdvise {
             }
         } catch (Exception e) {
             log.error("导出错误", e);
-            return resultHandler.error(e);
+            throw e;
         }
     }
 

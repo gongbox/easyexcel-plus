@@ -22,11 +22,6 @@ public class EasyExcelPlusConfig {
             }
 
             @Override
-            public Object error(Throwable e) {
-                return Result.fail(e.getMessage());
-            }
-
-            @Override
             public Object getData(Object result) {
                 return ((Result<?>) result).getData();
             }

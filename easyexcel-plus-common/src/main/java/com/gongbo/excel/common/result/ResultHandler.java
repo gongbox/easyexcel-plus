@@ -15,12 +15,6 @@ public interface ResultHandler {
     Object success(Object data);
 
     /**
-     * @param e
-     * @return
-     */
-    Object error(Throwable e);
-
-    /**
      * @param result
      * @return
      */
