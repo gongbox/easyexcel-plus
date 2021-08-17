@@ -103,11 +103,38 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
       }
   }
   ```
+- 配置类:
+    ```java
+    @Configuration
+    public class EasyExcelPlusConfig {
+    
+        @Bean
+        public ResultHandler resultBuilder() {
+            return new ResultHandler() {
+                @Override
+                public boolean check(Object result) {
+                    return result instanceof Result;
+                }
+    
+                @Override
+                public Object success(Object data) {
+                    return Result.success(data);
+                }
+    
+                @Override
+                public Object getData(Object result) {
+                    return ((Result<?>) result).getData();
+                }
+    
+            };
+        }
+    }
+    ```
 - 配置文件:
   ```yaml
   spring:
     application:
-      name: export_test
+      name: export_demo
 
   easyexcel-plus:
     export:
