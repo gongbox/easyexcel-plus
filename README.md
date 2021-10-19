@@ -46,8 +46,7 @@ public Result<List<ExportDemoView>> testNormal() {
 }
 ```
 返回数据如下：
-> 演示地址：http://8.129.7.25/export/test-normal
-
+> 演示地址：http://8.129.7.25/export/test-normal 
 若要实现导出excel，只需要在接口上增加注解@EnableExport即可，如下所示：
 ```java
 @GetMapping(value = "test-normal")
@@ -57,7 +56,7 @@ public Result<List<ExportDemoView>> testNormal() {
 }
 ```
 添加该注解后，接口依然正常查询，导出时只需要添加请求参数export=excel即可，如下所示：
-> 演示地址：http://8.129.7.25/export/test-normal?export=excel
+> 演示地址（请复制地址到浏览器地址栏，按回车健访问）：http://8.129.7.25/export/test-normal?export=excel
 
 ## 更多示例
 EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名、文件格式，模版导出，导出数据转换等等。
