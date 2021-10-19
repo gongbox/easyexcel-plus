@@ -56,7 +56,7 @@ public Result<List<ExportDemoView>> testNormal() {
     return Result.success(ExportDemoView.data());
 }
 ```
-添加该注解后，接口便同时支持查询、导出，不影响原有的查询。若要导出，则只需要添加请求参数export=excel即可，此时导出数据与查询结果一直，如下所示：
+添加该注解后，接口便同时支持查询、导出，不影响原有的查询。若要导出，则只需要添加请求参数export=excel即可，此时导出数据与查询结果一致，如下所示：
 > 演示地址（请复制地址到浏览器地址栏，按回车健访问）：http://8.129.7.25/export/test-normal?export=excel
 
 ## 更多示例
