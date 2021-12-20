@@ -55,15 +55,6 @@ public class ExportParam {
     }
 
     /**
-     * 是否是获取导出信息
-     *
-     * @return
-     */
-    public boolean isInfo() {
-        return Type.EXPORT_INFO.equals(type);
-    }
-
-    /**
      * 是否是导出Excel文件
      *
      * @return
@@ -74,7 +65,6 @@ public class ExportParam {
 
     @RequiredArgsConstructor
     public enum Type {
-        EXPORT_INFO("info"),
         EXPORT_EXCEL("excel");
 
         private final String value;

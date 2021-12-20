@@ -1,5 +1,6 @@
 package com.gongbo.excel.export.utils;
 
+import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.export.config.ExportProperties;
 import com.gongbo.excel.export.core.ExportHelper;
 import com.gongbo.excel.export.entity.ExportContext;
@@ -33,10 +34,11 @@ public class ExportUtils {
      * @param exportProperties
      * @return
      */
-    public static Class<?> getModelClass(Method method, ExportProperties exportProperties) {
+    public static Class<?> getModelClass(Method method, ExportProperties exportProperties, ResultHandler<?> resultHandler) {
         Class<?> returnType = method.getReturnType();
-        if (!returnType.getName().equals(exportProperties.getResponseClassName())) {
-            throw new ExportFailedException(MessageFormat.format("request method return type must be class[{0}]", exportProperties.getResponseClassName()));
+
+        if (returnType != resultHandler.resultClass()) {
+            throw new ExportFailedException(MessageFormat.format("request method return type must be class[{0}]", resultHandler.resultClass().getSimpleName()));
         }
 
         Type genericReturnType = method.getGenericReturnType();

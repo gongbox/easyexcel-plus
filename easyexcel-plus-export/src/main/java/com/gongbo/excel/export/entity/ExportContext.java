@@ -2,7 +2,7 @@ package com.gongbo.excel.export.entity;
 
 
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.gongbo.excel.export.annotations.EnableExport;
+import com.gongbo.excel.export.annotations.ExcelExport;
 import com.gongbo.excel.export.config.ExportProperties;
 import com.gongbo.excel.export.entity.fill.ExportFillData;
 import com.gongbo.excel.common.result.ResultHandler;
@@ -27,7 +27,7 @@ public class ExportContext {
     /**
      * 导出注解信息
      */
-    private EnableExport enableExport;
+    private ExcelExport excelExport;
 
     /**
      * 导出对应模型类
@@ -87,7 +87,7 @@ public class ExportContext {
     /**
      *
      */
-    private ResultHandler resultHandler;
+    private ResultHandler<?> resultHandler;
 
     /**
      * 是否输出目录

@@ -7,7 +7,6 @@ server:
 
 easyexcel-plus:
   export:
-    response-class-name: com.gongbo.excel.example.result.Result
     template-dir: classpath:exportTemplates
 
 

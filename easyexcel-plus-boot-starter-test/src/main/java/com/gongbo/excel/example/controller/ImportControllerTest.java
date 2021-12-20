@@ -2,7 +2,7 @@ package com.gongbo.excel.example.controller;
 
 import com.gongbo.excel.example.result.Result;
 import com.gongbo.excel.example.view.ExportDemoView;
-import com.gongbo.excel.imports.annotations.EnableImport;
+import com.gongbo.excel.imports.annotations.ExcelImport;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class ImportControllerTest {
      * 参数可以是数组、集合
      */
     @PostMapping(value = "test-import")
-    @EnableImport
+    @ExcelImport
     public Result<ExportDemoView[]> testImport(@RequestBody(required = false) ExportDemoView[] param) {
         return Result.success(param);
     }
@@ -36,7 +36,7 @@ public class ImportControllerTest {
      * 导入-模版下载
      */
     @GetMapping(value = "test-template")
-    @EnableImport(modelClass = ExportDemoView.class)
+    @ExcelImport(modelClass = ExportDemoView.class)
     public void testTemplate() {
     }
 
@@ -47,7 +47,7 @@ public class ImportControllerTest {
      * 参数可以是数组、集合
      */
     @RequestMapping(value = "test-import-template", method = {RequestMethod.GET, RequestMethod.POST})
-    @EnableImport
+    @ExcelImport
     public Result<ExportDemoView[]> testImportTemplate(@RequestBody(required = false) ExportDemoView[] param) {
         return Result.success(param);
     }

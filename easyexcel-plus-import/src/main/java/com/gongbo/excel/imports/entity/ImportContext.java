@@ -1,6 +1,6 @@
 package com.gongbo.excel.imports.entity;
 
-import com.gongbo.excel.imports.annotations.EnableImport;
+import com.gongbo.excel.imports.annotations.ExcelImport;
 import lombok.*;
 
 @Getter
@@ -18,7 +18,7 @@ public class ImportContext {
     /**
      * 导入注解信息
      */
-    private EnableImport autoEnableImport;
+    private ExcelImport excelImport;
 
     /**
      * 导入模板文件名

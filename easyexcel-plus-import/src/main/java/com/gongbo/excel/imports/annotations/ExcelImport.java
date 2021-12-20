@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EnableImport {
+public @interface ExcelImport {
 
     /**
      * 导入模板文件名,否则为时间戳

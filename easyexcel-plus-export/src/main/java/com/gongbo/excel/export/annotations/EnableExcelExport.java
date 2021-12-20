@@ -14,6 +14,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Import({ExportAdvise.class, ExportProperties.class})
 @Documented
-public @interface EnableAutoExport {
+public @interface EnableExcelExport {
 
 }

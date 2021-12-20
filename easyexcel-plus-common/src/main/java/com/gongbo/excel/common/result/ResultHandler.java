@@ -1,22 +1,25 @@
 package com.gongbo.excel.common.result;
 
-public interface ResultHandler {
+public interface ResultHandler<T> {
+
+    /**
+     * 返回结果包装类
+     *
+     * @return
+     */
+    Class<T> resultClass();
 
     /**
      * @param result
      * @return
      */
-    boolean check(Object result);
-
-    /**
-     * @param data
-     * @return
-     */
-    Object success(Object data);
+    default boolean check(Object result) {
+        return resultClass().isInstance(result);
+    }
 
     /**
      * @param result
      * @return
      */
-    Object getData(Object result);
+    Object getData(T result);
 }

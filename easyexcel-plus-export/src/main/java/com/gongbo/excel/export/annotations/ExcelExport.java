@@ -7,11 +7,11 @@ import com.gongbo.excel.export.enums.ExcelType;
 
 import java.lang.annotation.*;
 
-@Repeatable(EnableExports.class)
+@Repeatable(ExcelExports.class)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EnableExport {
+public @interface ExcelExport {
 
     /**
      * 导出文件名,否则为时间戳
@@ -36,7 +36,7 @@ public @interface EnableExport {
     /**
      * 导出模型类
      * 值为AutoModel.class（默认）时代表根据方法返回类型查找（要求该方法返回类型为ResponseEntity<Collection<T>> / 或 ResponseEntity<T[]>）
-     * 值为EnableExport。NoneModel.class时代表没有模型类，注意这时导出方式不能为AUTO
+     * 值为ExcelExport.NoneModel.class时代表没有模型类，注意这时导出方式不能为AUTO
      * 值为其他时代表指定为该模型类
      */
     Class<?> modelClass() default AutoModel.class;

@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Import(ImportConfig.class)
 @Documented
-public @interface EnableAutoImport {
+public @interface EnableExcelImport {
 
 }

@@ -9,23 +9,17 @@ import org.springframework.context.annotation.Configuration;
 public class EasyExcelPlusConfig {
 
     @Bean
-    public ResultHandler resultBuilder() {
-        return new ResultHandler() {
+    public ResultHandler<Result> resultBuilder() {
+        return new ResultHandler<Result>() {
             @Override
-            public boolean check(Object result) {
-                return result instanceof Result;
+            public Class<Result> resultClass() {
+                return Result.class;
             }
 
             @Override
-            public Object success(Object data) {
-                return Result.success(data);
+            public Object getData(Result result) {
+                return result.getData();
             }
-
-            @Override
-            public Object getData(Object result) {
-                return ((Result<?>) result).getData();
-            }
-
         };
     }
 }

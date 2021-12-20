@@ -36,7 +36,7 @@ public class ImportAdvise {
     @Autowired
     private ResultHandler resultHandler;
 
-    @Pointcut("@annotation(com.gongbo.excel.imports.annotations.EnableImport)")
+    @Pointcut("@annotation(com.gongbo.excel.imports.annotations.ExcelImport)")
     public void doImport() {
     }
 
@@ -80,7 +80,7 @@ public class ImportAdvise {
     }
 
     private Object downloadTemplate(ImportContext importContext, HttpServletResponse response) throws IOException {
-        DownloadTemplateHandler downloadTemplateHandler = ImportHandlers.of(importContext.getAutoEnableImport().downloadTemplateHandler());
+        DownloadTemplateHandler downloadTemplateHandler = ImportHandlers.of(importContext.getExcelImport().downloadTemplateHandler());
 
         //输出下载模板
         downloadTemplateHandler.download(importContext, response);
@@ -95,8 +95,8 @@ public class ImportAdvise {
             throw new IllegalArgumentException("Not found import file");
         }
 
-        ReadHandler readHandler = ImportHandlers.of(importContext.getAutoEnableImport().readHandler());
-        ImportDataConvert dataConvert = ImportHandlers.of(importContext.getAutoEnableImport().dataConvert());
+        ReadHandler readHandler = ImportHandlers.of(importContext.getExcelImport().readHandler());
+        ImportDataConvert dataConvert = ImportHandlers.of(importContext.getExcelImport().dataConvert());
 
         //执行读取文件
         CompletableFuture<Collection<?>> completableFuture = readHandler.read(importContext, file.getInputStream());

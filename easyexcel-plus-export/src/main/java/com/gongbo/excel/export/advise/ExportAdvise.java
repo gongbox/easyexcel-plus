@@ -9,7 +9,6 @@ import com.gongbo.excel.export.core.handler.ExportDataConvert;
 import com.gongbo.excel.export.core.handler.ExportLifecycle;
 import com.gongbo.excel.export.core.handler.WriteHandler;
 import com.gongbo.excel.export.entity.ExportContext;
-import com.gongbo.excel.export.entity.ExportInfo;
 import com.gongbo.excel.export.entity.ExportParam;
 import com.gongbo.excel.export.exception.NotSupportExportException;
 import com.gongbo.excel.export.utils.ExportUtils;
@@ -40,7 +39,7 @@ public class ExportAdvise {
     @Autowired
     private ExportProperties exportProperties;
 
-    @Pointcut("@annotation(com.gongbo.excel.export.annotations.EnableExport) || @annotation(com.gongbo.excel.export.annotations.EnableExports)")
+    @Pointcut("@annotation(com.gongbo.excel.export.annotations.ExcelExport) || @annotation(com.gongbo.excel.export.annotations.ExcelExports)")
     public void doExport() {
     }
 
@@ -89,13 +88,11 @@ public class ExportAdvise {
         try {
             ExportContextHolder.setContext(exportContext);
 
-            if (exportContext.getExportParam().isInfo()) {
-                return resultHandler.success(ExportInfo.buildExportInfo(exportContext));
-            } else if (exportContext.getExportParam().isExcel()) {
+            if (exportContext.getExportParam().isExcel()) {
                 //执行请求，获取请求返回值
                 Object result = joinPoint.proceed();
                 if (!(resultHandler.check(result))) {
-                    throw new NotSupportExportException(MessageFormat.format("request api return type must be class:{0}", exportProperties.getResponseClassName()));
+                    throw new NotSupportExportException(MessageFormat.format("request api return type must be class:{0}", resultHandler.resultClass().getSimpleName()));
                 } else {
                     return responseExcel(exportContext, result, response);
                 }
@@ -117,20 +114,20 @@ public class ExportAdvise {
      * @throws IOException
      */
     private static Object responseExcel(ExportContext exportContext, Object result, HttpServletResponse response) throws IOException {
-        ExportLifecycle exportLifecycle = ExportHandlers.of(exportContext.getEnableExport().afterExportHandler());
+        ExportLifecycle exportLifecycle = ExportHandlers.of(exportContext.getExcelExport().afterExportHandler());
 
         //
         exportLifecycle.afterPrepared(exportContext);
 
         //数据转换
-        ExportDataConvert exportDataConvert = ExportHandlers.of(exportContext.getEnableExport().dataConvert());
+        ExportDataConvert exportDataConvert = ExportHandlers.of(exportContext.getExcelExport().dataConvert());
         List<?> data = exportDataConvert.convert(exportContext, result);
 
         //
         exportLifecycle.afterDataConverted(exportContext, data);
 
         //执行导出
-        WriteHandler writeHandler = ExportHandlers.of(exportContext.getEnableExport().writeHandler());
+        WriteHandler writeHandler = ExportHandlers.of(exportContext.getExcelExport().writeHandler());
         //导出
         writeHandler.write(exportContext, data, ExportUtils.getExportOutputStream(exportContext, response));
 

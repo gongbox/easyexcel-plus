@@ -5,8 +5,8 @@ import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.CollectionUtil;
 import com.gongbo.excel.common.utils.ReflectUtil;
 import com.gongbo.excel.common.utils.StringUtil;
-import com.gongbo.excel.export.annotations.EnableExport;
-import com.gongbo.excel.export.annotations.EnableExports;
+import com.gongbo.excel.export.annotations.ExcelExport;
+import com.gongbo.excel.export.annotations.ExcelExports;
 import com.gongbo.excel.export.config.ExportProperties;
 import com.gongbo.excel.export.core.handler.FieldFilter;
 import com.gongbo.excel.export.core.provider.ExportProvider;
@@ -43,39 +43,39 @@ public class ExportHelper {
      * @param resultHandler
      * @return
      */
-    public static ExportContext buildExportContext(ExportParam exportParam, Method targetMethod, ExportProperties exportProperties, ResultHandler resultHandler) {
-        //查找对应EnableExport注解
-        EnableExport enableExport = findExportAnnotation(exportParam.getExportTag(), targetMethod);
+    public static ExportContext buildExportContext(ExportParam exportParam, Method targetMethod, ExportProperties exportProperties, ResultHandler<?> resultHandler) {
+        //查找对应ExcelExport注解
+        ExcelExport excelExport = findExportAnnotation(exportParam.getExportTag(), targetMethod);
 
         //获取对应模型类
-        Class<?> modelClass = getModelClass(targetMethod, enableExport, exportProperties);
+        Class<?> modelClass = getModelClass(targetMethod, excelExport, exportProperties, resultHandler);
 
         //获取导出字段信息
-        List<ExportFieldInfo> exportFieldInfos = getExportFieldInfos(enableExport, modelClass, EasyExcelProvider.getInstance());
+        List<ExportFieldInfo> exportFieldInfos = getExportFieldInfos(excelExport, modelClass, EasyExcelProvider.getInstance());
 
         //获取导出文件名
-        String fileName = buildFileName(enableExport);
+        String fileName = buildFileName(excelExport);
 
         //导出文件格式
-        ExcelTypeEnum excelType = getExcelType(enableExport, exportProperties);
+        ExcelTypeEnum excelType = getExcelType(excelExport, exportProperties);
 
         //获取输出路径
-        String outputPath = enableExport.outputPath();
+        String outputPath = excelExport.outputPath();
 
         return ExportContext.builder()
                 .exportProperties(exportProperties)
                 .resultHandler(resultHandler)
                 .modelClass(modelClass)
-                .enableExport(enableExport)
+                .excelExport(excelExport)
                 .fileName(fileName)
-                .sheetName(enableExport.sheetName())
-                .template(enableExport.template())
+                .sheetName(excelExport.sheetName())
+                .template(excelExport.template())
                 .excelType(excelType)
                 .fieldInfos(exportFieldInfos)
                 .exportParam(exportParam)
                 .outputPath(outputPath)
-                .formula(enableExport.formula())
-                .responseResult(enableExport.responseResult())
+                .formula(excelExport.formula())
+                .responseResult(excelExport.responseResult())
                 .userContext(new HashMap<>())
                 .build();
     }
@@ -84,41 +84,41 @@ public class ExportHelper {
      * 获取导出模型类
      *
      * @param targetMethod
-     * @param enableExport
+     * @param excelExport
      * @param exportProperties
      * @return
      */
-    private static Class<?> getModelClass(Method targetMethod, EnableExport enableExport, ExportProperties exportProperties) {
+    private static Class<?> getModelClass(Method targetMethod, ExcelExport excelExport, ExportProperties exportProperties, ResultHandler<?> resultHandler) {
         //没有导出模型类
-        if (enableExport.modelClass() == EnableExport.NoneModel.class) {
+        if (excelExport.modelClass() == ExcelExport.NoneModel.class) {
             return null;
         }
         //自动模型类时且是模板导出，则没有导出模型类
-        else if (enableExport.modelClass() == EnableExport.AutoModel.class && StringUtil.isNotEmpty(enableExport.template())) {
+        else if (excelExport.modelClass() == ExcelExport.AutoModel.class && StringUtil.isNotEmpty(excelExport.template())) {
             return null;
         }
         //根据方法返回类型查找
         else {
-            return Optional.ofNullable(ExportUtils.getModelClass(targetMethod, exportProperties))
-                    .orElseThrow(() -> new IllegalArgumentException("unable to get the export model class, please check the export method or add the modelClass attribute to the EnableExport annotation!"));
+            return Optional.ofNullable(ExportUtils.getModelClass(targetMethod, exportProperties, resultHandler))
+                    .orElseThrow(() -> new IllegalArgumentException("unable to get the export model class, please check the export method or add the modelClass attribute to the ExcelExport annotation!"));
         }
     }
 
     /**
      * 获取导出字段信息
      *
-     * @param enableExport
+     * @param excelExport
      * @param clazz
      * @param exportProvider
      * @return
      */
-    private static List<ExportFieldInfo> getExportFieldInfos(EnableExport enableExport, Class<?> clazz, ExportProvider exportProvider) {
+    private static List<ExportFieldInfo> getExportFieldInfos(ExcelExport excelExport, Class<?> clazz, ExportProvider exportProvider) {
         if (clazz == null) {
             return Collections.emptyList();
         }
 
         //字段过滤器
-        FieldFilter fieldFilter = ExportHandlers.of(enableExport.fieldFilter());
+        FieldFilter fieldFilter = ExportHandlers.of(excelExport.fieldFilter());
 
         return ReflectUtil.getFields(clazz, true).stream()
                 .map(field -> {
@@ -139,50 +139,50 @@ public class ExportHelper {
      * @param targetMethod
      * @return
      */
-    public static EnableExport findExportAnnotation(String exportTag, Method targetMethod) {
-        EnableExport[] enableExports = Optional.ofNullable(targetMethod.getAnnotation(EnableExports.class))
-                .map(EnableExports::value)
-                .orElseGet(() -> targetMethod.getAnnotationsByType(EnableExport.class));
+    public static ExcelExport findExportAnnotation(String exportTag, Method targetMethod) {
+        ExcelExport[] excelExports = Optional.ofNullable(targetMethod.getAnnotation(ExcelExports.class))
+                .map(ExcelExports::value)
+                .orElseGet(() -> targetMethod.getAnnotationsByType(ExcelExport.class));
 
         //没有找到注解
-        if (enableExports == null || enableExports.length == 0) {
-            throw new NotSupportExportException(MessageFormat.format("This method:{0} not support export, to enable export, please configure EnableExport annotation on the request method to enable export!", targetMethod.getName()));
+        if (excelExports == null || excelExports.length == 0) {
+            throw new NotSupportExportException(MessageFormat.format("This method:{0} not support export, to enable export, please configure ExcelExport annotation on the request method to enable export!", targetMethod.getName()));
         }
 
         //根据exportGroup过滤
-        Predicate<EnableExport> filter;
+        Predicate<ExcelExport> filter;
         if (StringUtil.isNotEmpty(exportTag)) {
             filter = e -> exportTag.equals(e.tag());
         } else {
             filter = e -> StringUtil.isEmpty(e.tag());
         }
 
-        List<EnableExport> enableExportList = Arrays.stream(enableExports)
+        List<ExcelExport> excelExportList = Arrays.stream(excelExports)
                 .filter(filter)
                 .collect(Collectors.toList());
 
         //没有找到对应注解
-        if (CollectionUtil.isEmpty(enableExportList)) {
+        if (CollectionUtil.isEmpty(excelExportList)) {
             throw new NotSupportExportException(MessageFormat.format("no matching export tag[{0}] on this method[{1}]", exportTag, targetMethod.getName()));
         }
 
         //多个注解匹配
-        if (enableExportList.size() > 1) {
+        if (excelExportList.size() > 1) {
             throw new ExportFailedException(MessageFormat.format("more than one export tag[{0}] matched on this method [{1}]", exportTag, targetMethod.getName()));
         }
 
         //返回匹配的注解
-        return enableExportList.get(0);
+        return excelExportList.get(0);
     }
 
     /**
      * 获取导出格式
      */
-    private static ExcelTypeEnum getExcelType(EnableExport enableExport, ExportProperties exportProperties) {
-        if (enableExport.excelType() != ExcelType.AUTO) {
-            return enableExport.excelType().getExcelTypeEnum();
+    private static ExcelTypeEnum getExcelType(ExcelExport excelExport, ExportProperties exportProperties) {
+        if (excelExport.excelType() != ExcelType.AUTO) {
+            return excelExport.excelType().getExcelTypeEnum();
         }
-        if (StringUtil.isEmpty(enableExport.template())) {
+        if (StringUtil.isEmpty(excelExport.template())) {
             String defaultExcelType = exportProperties.getDefaultExcelType();
             if ("xls".equalsIgnoreCase(defaultExcelType)) {
                 return ExcelTypeEnum.XLS;
@@ -190,9 +190,9 @@ public class ExportHelper {
                 return ExcelTypeEnum.XLSX;
             }
         }
-        if (enableExport.template().endsWith(ExcelTypeEnum.XLSX.getValue())) {
+        if (excelExport.template().endsWith(ExcelTypeEnum.XLSX.getValue())) {
             return ExcelTypeEnum.XLSX;
-        } else if (enableExport.template().endsWith(ExcelTypeEnum.XLS.getValue())) {
+        } else if (excelExport.template().endsWith(ExcelTypeEnum.XLS.getValue())) {
             return ExcelTypeEnum.XLS;
         } else {
             throw new IllegalArgumentException();
@@ -202,12 +202,12 @@ public class ExportHelper {
     /**
      * 获取文件名
      *
-     * @param enableExport
+     * @param excelExport
      * @return
      */
-    public static String buildFileName(EnableExport enableExport) {
-        String name = ExportHandlers.of(enableExport.fileNameConvert())
-                .apply(enableExport.fileName());
+    public static String buildFileName(ExcelExport excelExport) {
+        String name = ExportHandlers.of(excelExport.fileNameConvert())
+                .apply(excelExport.fileName());
         if (StringUtil.isEmpty(name)) {
             name = String.valueOf(System.currentTimeMillis());
         }

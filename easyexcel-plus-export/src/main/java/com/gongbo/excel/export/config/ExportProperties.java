@@ -12,11 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExportProperties {
     /**
-     * controller接口响应类名
-     */
-    private String responseClassName;
-
-    /**
      * 默认Sheet名称
      */
     private String defaultSheetName = "Sheet1";
