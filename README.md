@@ -46,7 +46,7 @@ public Result<List<ExportDemoView>> testNormal() {
 }
 ```
 返回数据如下：
-> 演示地址：http://8.129.7.25/export/test-normal
+> 演示地址：http://8.129.7.25/export/test-normal 
 
 若要实现导出excel，只需要在接口上增加注解@ExcelExport即可，如下所示：
 ```java
@@ -56,11 +56,13 @@ public Result<List<ExportDemoView>> testNormal() {
     return Result.success(ExportDemoView.data());
 }
 ```
-添加该注解后，接口依然正常查询，导出时只需要添加请求参数export=excel即可，如下所示：
-> 演示地址：http://8.129.7.25/export/test-normal?export=excel
+添加该注解后，接口便同时支持查询、导出，不影响原有的查询。若要导出，则只需要添加请求参数export=excel即可，此时导出数据与查询结果一致，如下所示：
+> 演示地址（请复制地址到浏览器地址栏，按回车健访问）：http://8.129.7.25/export/test-normal?export=excel
 
 ## 更多示例
 EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名、文件格式，模版导出，导出数据转换等等。
+
+查看示例工程源码，请前往：https://github.com/gongbox/easyexcel-plus-example
 
 ### 环境说明
 - 模型类：
@@ -402,6 +404,7 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
   >演示地址： 导入-模版下载：http://8.129.7.25/import/test-import?import=template
     
   >演示地址： 导入-数组参数：http://8.129.7.25/import/test-import?import=excel
+
 # 期望 | Futures
 
 > 欢迎提出更好的意见，帮助完善 EasyExcelPlus
