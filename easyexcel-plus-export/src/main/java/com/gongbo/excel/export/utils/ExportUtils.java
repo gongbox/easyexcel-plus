@@ -2,7 +2,6 @@ package com.gongbo.excel.export.utils;
 
 import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.export.config.ExportProperties;
-import com.gongbo.excel.export.core.ExportHelper;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.exception.ExportFailedException;
 import lombok.AccessLevel;
@@ -10,8 +9,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileUrlResource;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -103,22 +103,6 @@ public class ExportUtils {
     /**
      * @param exportContext
      * @return
-     */
-    public static OutputStream getExportOutputStream(ExportContext exportContext, HttpServletResponse response) throws IOException {
-        if (exportContext.isOutputFile()) {
-            Files.createDirectories(Paths.get(exportContext.getOutputPath()));
-            File file = new File(exportContext.getOutputPath(), exportContext.getFileName() + exportContext.getExcelType().getValue());
-            return new FileOutputStream(file);
-        } else {
-            //设置响应头信息
-            ExportHelper.setDownloadResponseHeaders(response, exportContext);
-            return response.getOutputStream();
-        }
-    }
-
-    /**
-     * @param exportContext
-     * @return
      * @throws IOException
      */
     public static InputStream getTemplateInputStream(ExportContext exportContext) throws IOException {
@@ -127,7 +111,7 @@ public class ExportUtils {
         if (template.startsWith(CLASSPATH_PATH_PREFIX) || template.startsWith(FILE_PATH_PREFIX)) {
             templatePath = template;
         } else {
-            templatePath = exportContext.getExportProperties().getTemplateDir() + "/" + template;
+            templatePath = Paths.get(exportContext.getExportProperties().getTemplateDir(), template).toString();
         }
 
         InputStream inputStream;

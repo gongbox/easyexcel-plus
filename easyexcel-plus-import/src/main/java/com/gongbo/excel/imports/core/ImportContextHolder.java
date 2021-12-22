@@ -2,7 +2,7 @@ package com.gongbo.excel.imports.core;
 
 
 import com.gongbo.excel.imports.entity.ImportContext;
-import com.gongbo.excel.imports.entity.ImportParam;
+import com.gongbo.excel.imports.param.ImportParam;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

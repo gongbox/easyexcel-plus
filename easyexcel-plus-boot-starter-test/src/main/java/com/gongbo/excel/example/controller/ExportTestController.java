@@ -8,13 +8,14 @@ import com.gongbo.excel.common.utils.Times;
 import com.gongbo.excel.example.result.Result;
 import com.gongbo.excel.example.view.ExportDemoView;
 import com.gongbo.excel.export.annotations.ExcelExport;
+import com.gongbo.excel.export.constants.ExcelType;
 import com.gongbo.excel.export.core.ExportContextHolder;
-import com.gongbo.excel.export.core.handler.ExportDataConvert;
-import com.gongbo.excel.export.core.handler.FieldFilter;
-import com.gongbo.excel.export.core.handler.FileNameConvert;
+import com.gongbo.excel.export.custom.ExportDataConvert;
+import com.gongbo.excel.export.custom.FieldFilter;
+import com.gongbo.excel.export.custom.FileNameConvert;
 import com.gongbo.excel.export.entity.ExportContext;
-import com.gongbo.excel.export.entity.fill.ExportFillData;
-import com.gongbo.excel.export.enums.ExcelType;
+import com.gongbo.excel.export.entity.ExportFieldInfo;
+import com.gongbo.excel.export.entity.ExportFillData;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -122,7 +122,7 @@ public class ExportTestController {
 
     public static class CustomFieldFilter implements FieldFilter {
         @Override
-        public boolean predict(Field field) {
+        public boolean predict(ExportFieldInfo fieldInfo) {
             return RandomUtil.randomBoolean();
         }
     }

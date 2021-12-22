@@ -1,9 +1,13 @@
 package com.gongbo.excel.export.annotations;
 
 
-import com.gongbo.excel.export.core.handler.*;
-import com.gongbo.excel.export.core.handler.defaults.*;
-import com.gongbo.excel.export.enums.ExcelType;
+import com.gongbo.excel.export.constants.ExcelType;
+import com.gongbo.excel.export.custom.ExportDataConvert;
+import com.gongbo.excel.export.custom.FieldFilter;
+import com.gongbo.excel.export.custom.FileNameConvert;
+import com.gongbo.excel.export.custom.defaults.DefaultExportDataConvert;
+import com.gongbo.excel.export.custom.defaults.DefaultFieldFilter;
+import com.gongbo.excel.export.custom.defaults.DefaultFileNameConvert;
 
 import java.lang.annotation.*;
 
@@ -19,7 +23,7 @@ public @interface ExcelExport {
     String fileName() default "";
 
     /**
-     * 导出sheet名称,为空时默认为Sheet1
+     * 导出sheet名称,为空时取默认值
      */
     String sheetName() default "";
 
@@ -64,19 +68,14 @@ public @interface ExcelExport {
     Class<? extends ExportDataConvert> dataConvert() default DefaultExportDataConvert.class;
 
     /**
-     * 生成文件执行器
-     */
-    Class<? extends WriteHandler> writeHandler() default DefaultWriteHandler.class;
-
-    /**
-     *
-     */
-    Class<? extends ExportLifecycle> afterExportHandler() default DefaultExportLifecycle.class;
-
-    /**
      * 导出excel文件格式
      */
     ExcelType excelType() default ExcelType.AUTO;
+
+    /**
+     * 指定导出方式,否则为默认值
+     */
+    String exportBy() default "";
 
     /**
      * 是否执行公式

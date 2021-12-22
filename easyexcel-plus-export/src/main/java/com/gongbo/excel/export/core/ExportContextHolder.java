@@ -2,7 +2,7 @@ package com.gongbo.excel.export.core;
 
 
 import com.gongbo.excel.export.entity.ExportContext;
-import com.gongbo.excel.export.entity.ExportParam;
+import com.gongbo.excel.export.param.ExportParam;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

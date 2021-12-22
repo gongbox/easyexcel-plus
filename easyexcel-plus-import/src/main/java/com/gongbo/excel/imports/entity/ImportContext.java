@@ -1,6 +1,9 @@
 package com.gongbo.excel.imports.entity;
 
+
 import com.gongbo.excel.imports.annotations.ExcelImport;
+import com.gongbo.excel.imports.config.ImportProperties;
+import com.gongbo.excel.imports.param.ImportParam;
 import lombok.*;
 
 @Getter
@@ -23,7 +26,7 @@ public class ImportContext {
     /**
      * 导入模板文件名
      */
-    private String templateFileName;
+    private String templateFilename;
 
     /**
      * 导入sheet名称
@@ -38,21 +41,26 @@ public class ImportContext {
     /**
      * 导入目标参数位置
      */
-    private Integer argIndex;
+    private Integer targetArgumentIndex;
 
     /**
      * 导入接收参数容器类型
      */
-    private Class<?> containerClass;
+    private Class<?> targetArgumentContainerClass;
 
     /**
      * 导入对应模型类
      */
-    private Class<?> modelClass;
+    private Class<?> targetArgumentClass;
 
     /**
      * 导入文件参数名称
      */
-    private String paramName;
+    private String fileParamName;
+
+    /**
+     * 配置信息
+     */
+    private ImportProperties importProperties;
 
 }

@@ -1,9 +1,5 @@
 package com.gongbo.excel.imports.annotations;
 
-import com.gongbo.excel.imports.core.ImportHandlers;
-import com.gongbo.excel.imports.handler.DownloadTemplateHandler;
-import com.gongbo.excel.imports.handler.ImportDataConvert;
-import com.gongbo.excel.imports.handler.ReadHandler;
 
 import java.lang.annotation.*;
 
@@ -13,9 +9,9 @@ import java.lang.annotation.*;
 public @interface ExcelImport {
 
     /**
-     * 导入模板文件名,否则为时间戳
+     * 导入模板下载文件名,否则为时间戳
      */
-    String templateFileName() default "";
+    String templateFilename() default "";
 
     /**
      * 导入sheet名称,为空时默认为Sheet1
@@ -30,7 +26,7 @@ public @interface ExcelImport {
     /**
      * 请求参数名称
      */
-    String paramName() default "file";
+    String fileParamName() default "file";
 
     /**
      * 导入模型类
@@ -38,18 +34,7 @@ public @interface ExcelImport {
     Class<?> modelClass() default Object.class;
 
     /**
-     * 数据转换
+     * 指定导入方式,否则从配置中取默认值
      */
-    Class<? extends ImportDataConvert> dataConvert() default ImportHandlers.DefaultImportDataConvert.class;
-
-    /**
-     * 读取文件执行器
-     */
-    Class<? extends ReadHandler> readHandler() default ImportHandlers.DefaultReadHandler.class;
-
-    /**
-     * 读取文件执行器
-     */
-    Class<? extends DownloadTemplateHandler> downloadTemplateHandler() default ImportHandlers.DefaultDownloadTemplateHandler.class;
-
+    String importBy() default "";
 }

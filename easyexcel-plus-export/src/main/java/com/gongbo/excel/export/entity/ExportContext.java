@@ -2,11 +2,11 @@ package com.gongbo.excel.export.entity;
 
 
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.gongbo.excel.export.annotations.ExcelExport;
-import com.gongbo.excel.export.config.ExportProperties;
-import com.gongbo.excel.export.entity.fill.ExportFillData;
 import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.StringUtil;
+import com.gongbo.excel.export.annotations.ExcelExport;
+import com.gongbo.excel.export.config.ExportProperties;
+import com.gongbo.excel.export.param.ExportParam;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExportContext {
+
     /**
      * 导出请求参数
      */
@@ -80,7 +81,7 @@ public class ExportContext {
     private Map<Object, Object> userContext;
 
     /**
-     *
+     * 配置信息
      */
     private ExportProperties exportProperties;
 

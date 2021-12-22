@@ -1,9 +1,10 @@
 package com.gongbo.excel.export.config;
 
-import com.alibaba.excel.support.ExcelTypeEnum;
+import com.gongbo.excel.common.result.ResultHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Getter
@@ -35,4 +36,12 @@ public class ExportProperties {
      * 默认导出excel格式
      */
     private String defaultExcelType = "xlsx";
+
+    /**
+     * 默认导出方式
+     */
+    private String defaultExportBy = "easy_excel";
+
+    @Autowired
+    private ResultHandler<?> resultHandler;
 }
