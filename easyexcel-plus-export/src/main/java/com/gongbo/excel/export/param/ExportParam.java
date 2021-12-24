@@ -1,12 +1,6 @@
 package com.gongbo.excel.export.param;
 
-import com.gongbo.excel.common.utils.StringUtil;
-import com.gongbo.excel.common.utils.Utils;
 import lombok.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -28,31 +22,6 @@ public class ExportParam {
      */
     private Type type;
 
-    /**
-     * 构建ExportParam对象
-     *
-     * @param request
-     * @return
-     */
-    public static ExportParam parse(HttpServletRequest request) {
-        String export = Utils.firstNotEmpty(() -> request.getParameter(ExportParam.EXPORT), () -> request.getHeader(ExportParam.EXPORT));
-
-        if (StringUtil.isEmpty(export)) {
-            return null;
-        }
-
-        Type type = Type.of(export);
-
-        Objects.requireNonNull(type, MessageFormat.format("Export request parameter error:{0}", export));
-
-        //获取exportTag参数
-        String exportTag = Utils.firstNotEmpty(() -> request.getParameter(ExportParam.EXPORT_TAG), () -> request.getHeader(ExportParam.EXPORT_TAG));
-
-        return ExportParam.builder()
-                .exportTag(exportTag)
-                .type(type)
-                .build();
-    }
 
     /**
      * 是否是导出Excel文件

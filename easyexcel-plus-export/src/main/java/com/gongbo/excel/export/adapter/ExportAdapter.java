@@ -1,5 +1,6 @@
 package com.gongbo.excel.export.adapter;
 
+import com.gongbo.excel.common.adapter.Adapter;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.ExportFieldInfo;
 
@@ -8,14 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-public interface ExportAdapter {
-
-    /**
-     * 标签
-     *
-     * @return
-     */
-    String name();
+public interface ExportAdapter extends Adapter {
 
     /**
      * 普通导出

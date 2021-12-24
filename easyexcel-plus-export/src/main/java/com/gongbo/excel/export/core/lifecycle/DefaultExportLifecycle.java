@@ -2,10 +2,11 @@ package com.gongbo.excel.export.core.lifecycle;
 
 import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.utils.StringUtil;
+import com.gongbo.excel.common.utils.TemplateUtils;
 import com.gongbo.excel.common.utils.Utils;
 import com.gongbo.excel.common.utils.WebUtils;
 import com.gongbo.excel.export.adapter.ExportAdapter;
-import com.gongbo.excel.export.annotations.ExcelExport;
+import com.gongbo.excel.export.annotations.Export;
 import com.gongbo.excel.export.config.ExportProperties;
 import com.gongbo.excel.export.core.ExportHandlers;
 import com.gongbo.excel.export.custom.ExportDataConvert;
@@ -13,7 +14,6 @@ import com.gongbo.excel.export.custom.FieldFilter;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.ExportFieldInfo;
 import com.gongbo.excel.export.param.ExportParam;
-import com.gongbo.excel.export.utils.ExportUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +31,8 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
 
     @Override
     public boolean isExportRequest(ExportProperties exportProperties, HttpServletRequest request) {
-        String export = Utils.firstNotEmpty(() -> request.getParameter(ExportParam.EXPORT),
-                () -> request.getHeader(ExportParam.EXPORT));
-        return StringUtil.isNotEmpty(export);
+        return StringUtil.isNotEmpty(Utils.firstNotEmpty(() -> request.getParameter(ExportParam.EXPORT),
+                () -> request.getHeader(ExportParam.EXPORT)));
     }
 
     @Override
@@ -41,9 +40,7 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
         String export = Utils.firstNotEmpty(() -> request.getParameter(ExportParam.EXPORT),
                 () -> request.getHeader(ExportParam.EXPORT));
 
-        if (StringUtil.isEmpty(export)) {
-            return null;
-        }
+        Objects.requireNonNull(export);
 
         ExportParam.Type type = ExportParam.Type.of(export);
 
@@ -62,41 +59,41 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
     @Override
     public ExportContext prepareContext(ExportProperties exportProperties, ExportParam exportParam, Method targetMethod) {
         //查找对应ExcelExport注解
-        ExcelExport excelExport = findExportAnnotation(exportParam.getExportTag(), targetMethod);
+        Export export = findExportAnnotation(exportParam.getExportTag(), targetMethod);
 
         //获取对应模型类
-        Class<?> modelClass = getModelClass(targetMethod, excelExport, exportProperties, exportProperties.getResultHandler());
+        Class<?> modelClass = getModelClass(targetMethod, export, exportProperties, exportProperties.getResultHandler());
 
         //获取导出文件名
-        String fileName = buildFileName(excelExport);
+        String fileName = buildFileName(export);
 
         //导出文件格式
-        ExcelType excelType = getExcelType(excelExport, exportProperties);
+        ExcelType excelType = getExcelType(export, exportProperties);
 
         //获取输出路径
-        String outputPath = excelExport.outputPath();
+        String outputPath = export.outputPath();
 
         return ExportContext.builder()
                 .exportProperties(exportProperties)
                 .resultHandler(exportProperties.getResultHandler())
-                .modelClass(modelClass)
-                .excelExport(excelExport)
+                .model(modelClass)
+                .export(export)
                 .fileName(fileName)
-                .sheetName(excelExport.sheetName())
-                .template(excelExport.template())
+                .sheetName(export.sheetName())
+                .template(export.template())
                 .excelType(excelType)
                 .fieldInfos(null)
                 .exportParam(exportParam)
                 .outputPath(outputPath)
-                .formula(excelExport.formula())
-                .responseResult(excelExport.responseResult())
+                .formula(export.formula())
+                .responseResult(export.responseResult())
                 .userContext(new HashMap<>())
                 .build();
     }
 
     @Override
     public ExportAdapter selectAdapter(ExportContext exportContext, Collection<ExportAdapter> adapters) {
-        String exportBy = exportContext.getExcelExport().exportBy();
+        String exportBy = exportContext.getExport().exportBy();
 
         if (StringUtil.isEmpty(exportBy)) {
             //取默认导出
@@ -113,14 +110,14 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
 
     @Override
     public void prepareExportFieldInfos(ExportContext exportContext, ExportAdapter exportAdapter) {
-        Class<?> modelClass = exportContext.getModelClass();
+        Class<?> modelClass = exportContext.getModel();
         List<ExportFieldInfo> fieldInfos;
         if (modelClass == null) {
             fieldInfos = Collections.emptyList();
         } else {
-            List<ExportFieldInfo> exportFieldInfos = exportAdapter.findExportFieldInfos(exportContext.getModelClass());
+            List<ExportFieldInfo> exportFieldInfos = exportAdapter.findExportFieldInfos(exportContext.getModel());
             //字段过滤器
-            FieldFilter fieldFilter = ExportHandlers.of(exportContext.getExcelExport().fieldFilter());
+            FieldFilter fieldFilter = ExportHandlers.of(exportContext.getExport().fieldFilter());
 
             fieldInfos = exportFieldInfos
                     .stream()
@@ -133,7 +130,7 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
 
     @Override
     public List<?> prepareData(ExportContext exportContext, Object result) {
-        ExportDataConvert exportDataConvert = ExportHandlers.of(exportContext.getExcelExport().dataConvert());
+        ExportDataConvert exportDataConvert = ExportHandlers.of(exportContext.getExport().dataConvert());
         return exportDataConvert.convert(exportContext, result);
     }
 
@@ -155,9 +152,9 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
 
     @Override
     public void export(ExportContext exportContext, List<?> data, ExportAdapter adapter, OutputStream outputStream) throws IOException {
-        String template = exportContext.getExcelExport().template();
+        String template = exportContext.getExport().template();
         if (StringUtil.isNotEmpty(template)) {
-            InputStream templateInputStream = ExportUtils.getTemplateInputStream(exportContext);
+            InputStream templateInputStream = TemplateUtils.getTemplateInputStream(exportContext.getExportProperties().getTemplateDir(), exportContext.getTemplate());
             //模板导出
             adapter.export(exportContext, templateInputStream, data, outputStream);
         } else {

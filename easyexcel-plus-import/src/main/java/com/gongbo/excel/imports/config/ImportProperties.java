@@ -3,12 +3,10 @@ package com.gongbo.excel.imports.config;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
 @ToString
-@Component
 public class ImportProperties {
     /**
      * 默认Sheet名称

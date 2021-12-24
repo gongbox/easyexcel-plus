@@ -17,7 +17,7 @@ public class ImportAdapters {
      * @param adapter
      */
     public static void addAdapter(ImportAdapter adapter) {
-        ADAPTERS.add( adapter);
+        ADAPTERS.add(adapter);
     }
 
     /**

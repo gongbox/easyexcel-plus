@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ExcelImport {
+public @interface Import {
 
     /**
      * 导入模板
@@ -31,12 +31,12 @@ public @interface ExcelImport {
     /**
      * 请求参数名称
      */
-    String fileParamName() default "file";
+    String fileParam() default "file";
 
     /**
      * 导入模型类
      */
-    Class<?> modelClass() default Object.class;
+    Class<?> model() default Object.class;
 
     /**
      * 指定导入方式,否则从配置中取默认值

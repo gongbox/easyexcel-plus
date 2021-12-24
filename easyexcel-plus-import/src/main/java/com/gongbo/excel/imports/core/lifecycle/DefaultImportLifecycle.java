@@ -1,11 +1,9 @@
 package com.gongbo.excel.imports.core.lifecycle;
 
 import com.gongbo.excel.common.enums.ExcelType;
-import com.gongbo.excel.common.utils.StringUtil;
-import com.gongbo.excel.common.utils.Utils;
-import com.gongbo.excel.common.utils.WebUtils;
+import com.gongbo.excel.common.utils.*;
 import com.gongbo.excel.imports.adapter.ImportAdapter;
-import com.gongbo.excel.imports.annotations.ExcelImport;
+import com.gongbo.excel.imports.annotations.Import;
 import com.gongbo.excel.imports.config.ImportProperties;
 import com.gongbo.excel.imports.entity.ImportContext;
 import com.gongbo.excel.imports.exception.NotSupportImportException;
@@ -38,13 +36,11 @@ public class DefaultImportLifecycle implements ImportLifecycle {
     /**
      * 当前请求是否是导入请求
      *
-     * @return
+     * @return true:是，false：否
      */
     @Override
     public boolean isImportRequest(ImportProperties importProperties, HttpServletRequest request) {
-        String imports = Utils.firstNotEmpty(() -> request.getParameter(IMPORT), () -> request.getHeader(IMPORT));
-
-        return StringUtil.isNotEmpty(imports);
+        return StringUtil.isNotEmpty(Utils.firstNotEmpty(() -> request.getParameter(IMPORT), () -> request.getHeader(IMPORT)));
     }
 
     /**
@@ -54,15 +50,13 @@ public class DefaultImportLifecycle implements ImportLifecycle {
      */
     @Override
     public ImportParam prepareParam(ImportProperties importProperties, HttpServletRequest request) {
-        String imports = Utils.firstNotEmpty(() -> request.getParameter(IMPORT), () -> request.getHeader(IMPORT));
+        String param = Utils.firstNotEmpty(() -> request.getParameter(IMPORT), () -> request.getHeader(IMPORT));
 
-        if (StringUtil.isEmpty(imports)) {
-            return null;
-        }
+        Objects.requireNonNull(param);
 
-        ImportParam.Type type = ImportParam.Type.of(imports);
+        ImportParam.Type type = ImportParam.Type.of(param);
 
-        Objects.requireNonNull(type, MessageFormat.format("Import request parameter error:{0}", imports));
+        Objects.requireNonNull(type);
 
         return ImportParam.builder()
                 .type(type)
@@ -78,21 +72,21 @@ public class DefaultImportLifecycle implements ImportLifecycle {
      */
     @Override
     public ImportContext prepareContext(ImportProperties importProperties, ImportParam importParam, Method targetMethod) {
-        ExcelImport excelImport = targetMethod.getAnnotation(ExcelImport.class);
+        Import importAnnotation = targetMethod.getAnnotation(Import.class);
         //检查是否支持导入
-        if (excelImport == null) {
+        if (importAnnotation == null) {
             throw new NotSupportImportException(MessageFormat.format("this method:{0} not support import, to enable import, please configure ExcelImport annotation on the request method to enable import", targetMethod.getName()));
         }
 
         //目标参数位置
-        boolean mustExists = !importParam.isTemplate() || excelImport.modelClass() == Object.class;
+        boolean mustExists = !importParam.isTemplate() || importAnnotation.model() == Object.class;
         Integer argIndex = ImportUtils.getImportTargetArgIndex(targetMethod, mustExists);
         //目标参数类型
         Class<?> modelContainerClass = argIndex == null ? null : ImportUtils.getModelContainerClass(targetMethod, argIndex);
         //导入数据模型类
         Class<?> modelClass;
-        if (excelImport.modelClass() != Object.class) {
-            modelClass = excelImport.modelClass();
+        if (importAnnotation.model() != Object.class) {
+            modelClass = importAnnotation.model();
         } else {
             modelClass = ImportUtils.getModelClass(targetMethod, argIndex);
 
@@ -101,16 +95,16 @@ public class DefaultImportLifecycle implements ImportLifecycle {
             }
         }
 
-        String sheetName = excelImport.sheetName();
+        String sheetName = importAnnotation.sheetName();
 
         return ImportContext.builder()
                 .importProperties(importProperties)
-                .template(excelImport.template())
-                .templateFilename(excelImport.templateFilename())
+                .template(importAnnotation.template())
+                .templateFilename(importAnnotation.templateFilename())
                 .importParam(importParam)
-                .excelImport(excelImport)
-                .fileParamName(excelImport.fileParamName())
-                .sheetNo(excelImport.sheetNo() >= 0 ? excelImport.sheetNo() : null)
+                .anImport(importAnnotation)
+                .fileParam(importAnnotation.fileParam())
+                .sheetNo(importAnnotation.sheetNo() >= 0 ? importAnnotation.sheetNo() : null)
                 .sheetName(sheetName)
                 .targetArgumentIndex(argIndex)
                 .targetArgumentContainerClass(modelContainerClass)
@@ -127,7 +121,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
      */
     @Override
     public ImportAdapter selectAdapter(ImportContext importContext, Collection<ImportAdapter> adapters) {
-        String importBy = importContext.getExcelImport().importBy();
+        String importBy = importContext.getAnImport().importBy();
 
         if (StringUtil.isEmpty(importBy)) {
             //取默认导出
@@ -149,26 +143,25 @@ public class DefaultImportLifecycle implements ImportLifecycle {
     public void responseTemplate(ImportContext importContext, ImportAdapter importAdapter) throws IOException {
         HttpServletResponse response = WebUtils.getCurrentResponse();
 
-        String templateFilename = importContext.getTemplateFilename();
-        if (StringUtil.isEmpty(templateFilename)) {
-            templateFilename = String.valueOf(System.currentTimeMillis());
+        String responseFilename = importContext.getTemplateFilename();
+        if (StringUtil.isEmpty(responseFilename)) {
+            responseFilename = String.valueOf(System.currentTimeMillis());
         }
 
         if (StringUtil.isNotEmpty(importContext.getTemplate())) {
-            if (importContext.getTemplate().contains(ExcelType.XLSX.getValue())) {
-                templateFilename += ExcelType.XLSX.getValue();
-            } else {
-                templateFilename += ExcelType.XLS.getValue();
-            }
+            //设置文件后缀
+            responseFilename += TemplateUtils.getTemplateExcelType(importContext.getTemplate()).getValue();
             //设置响应头信息
-            ImportUtils.addHeader(templateFilename, response);
-            InputStream templateInputStream = ImportUtils.getTemplateInputStream(importContext);
+            ResponseUtils.setDownloadFileHeader(response, responseFilename);
+            InputStream templateInputStream = TemplateUtils.getTemplateInputStream(importContext.getImportProperties().getTemplateDir(),
+                    importContext.getTemplateFilename());
             FileCopyUtils.copy(templateInputStream, response.getOutputStream());
         } else {
-            templateFilename += ExcelType.XLSX.getValue();
+            //设置文件后缀
+            responseFilename += ExcelType.XLSX.getValue();
             //设置响应头信息
-            ImportUtils.addHeader(templateFilename, response);
-            importAdapter.responseTemplate(importContext, response);
+            ResponseUtils.setDownloadFileHeader(response, responseFilename);
+            importAdapter.responseTemplate(importContext, response.getOutputStream());
         }
     }
 
@@ -181,10 +174,10 @@ public class DefaultImportLifecycle implements ImportLifecycle {
      */
     @Override
     public Collection<?> readData(ImportContext importContext, ImportAdapter importAdapter) throws IOException, ExecutionException, InterruptedException, TimeoutException, ServletException {
-        Part file = WebUtils.getCurrentRequest().getPart(importContext.getFileParamName());
+        Part file = WebUtils.getCurrentRequest().getPart(importContext.getFileParam());
 
         if (file == null) {
-            throw new IllegalArgumentException("Not found import file");
+            throw new IllegalArgumentException("没有读取到文件参数");
         }
 
         //获取导入数据
@@ -239,7 +232,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
                     Collection<Object> collection = (Collection<Object>) containerClass.newInstance();
                     return data.stream().collect(Collectors.toCollection(() -> collection));
                 } catch (InstantiationException | IllegalAccessException e) {
-                    log.error("import instance collection failed", e);
+                    log.error("导入生成接口参数实例错误", e);
                 }
             }
         }
@@ -249,7 +242,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
     }
 
     /**
-     * 填充请求参数
+     * 生成请求参数
      *
      * @param importContext
      * @param joinPoint
@@ -257,7 +250,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
      * @return
      */
     @Override
-    public Object[] fillArguments(ImportContext importContext, ProceedingJoinPoint joinPoint, Object data) {
+    public Object[] buildArguments(ImportContext importContext, ProceedingJoinPoint joinPoint, Object data) {
         Object[] args = joinPoint.getArgs();
         //替换对应位置参数
         args[importContext.getTargetArgumentIndex()] = data;

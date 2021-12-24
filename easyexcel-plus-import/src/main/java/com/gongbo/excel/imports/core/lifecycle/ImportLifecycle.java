@@ -72,13 +72,13 @@ public interface ImportLifecycle {
     Object convertData(ImportContext importContext, Collection<?> data);
 
     /**
-     * 填充请求参数
+     * 生成请求参数
      *
      * @param importContext
      * @param joinPoint
      * @param data
      * @return
      */
-    Object[] fillArguments(ImportContext importContext, ProceedingJoinPoint joinPoint, Object data);
+    Object[] buildArguments(ImportContext importContext, ProceedingJoinPoint joinPoint, Object data);
 
 }

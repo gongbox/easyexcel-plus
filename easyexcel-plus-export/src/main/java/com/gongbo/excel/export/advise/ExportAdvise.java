@@ -18,7 +18,7 @@ public class ExportAdvise {
     @Autowired
     private ExportProperties exportProperties;
 
-    @Pointcut("@annotation(com.gongbo.excel.export.annotations.ExcelExport) || @annotation(com.gongbo.excel.export.annotations.ExcelExports)")
+    @Pointcut("@annotation(com.gongbo.excel.export.annotations.Export) || @annotation(com.gongbo.excel.export.annotations.Exports)")
     public void doExport() {
     }
 

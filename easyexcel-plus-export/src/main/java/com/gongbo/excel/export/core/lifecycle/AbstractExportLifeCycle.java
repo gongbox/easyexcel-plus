@@ -3,9 +3,11 @@ package com.gongbo.excel.export.core.lifecycle;
 import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.CollectionUtil;
+import com.gongbo.excel.common.utils.ResponseUtils;
 import com.gongbo.excel.common.utils.StringUtil;
-import com.gongbo.excel.export.annotations.ExcelExport;
-import com.gongbo.excel.export.annotations.ExcelExports;
+import com.gongbo.excel.common.utils.TemplateUtils;
+import com.gongbo.excel.export.annotations.Export;
+import com.gongbo.excel.export.annotations.Exports;
 import com.gongbo.excel.export.config.ExportProperties;
 import com.gongbo.excel.export.constants.ExportExcelType;
 import com.gongbo.excel.export.core.ExportHandlers;
@@ -15,10 +17,7 @@ import com.gongbo.excel.export.exception.NotSupportExportException;
 import com.gongbo.excel.export.utils.ExportUtils;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Predicate;
@@ -37,10 +36,10 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
      * @param targetMethod
      * @return
      */
-    public static ExcelExport findExportAnnotation(String exportTag, Method targetMethod) {
-        ExcelExport[] annotations = Optional.ofNullable(targetMethod.getAnnotation(ExcelExports.class))
-                .map(ExcelExports::value)
-                .orElseGet(() -> targetMethod.getAnnotationsByType(ExcelExport.class));
+    public static Export findExportAnnotation(String exportTag, Method targetMethod) {
+        Export[] annotations = Optional.ofNullable(targetMethod.getAnnotation(Exports.class))
+                .map(Exports::value)
+                .orElseGet(() -> targetMethod.getAnnotationsByType(Export.class));
 
         //没有找到注解
         if (annotations == null || annotations.length == 0) {
@@ -50,14 +49,14 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
         }
 
         //根据exportGroup过滤
-        Predicate<ExcelExport> filter;
+        Predicate<Export> filter;
         if (StringUtil.isNotEmpty(exportTag)) {
             filter = e -> exportTag.equals(e.tag());
         } else {
             filter = e -> StringUtil.isEmpty(e.tag());
         }
 
-        List<ExcelExport> annotationList = Arrays.stream(annotations)
+        List<Export> annotationList = Arrays.stream(annotations)
                 .filter(filter)
                 .collect(Collectors.toList());
 
@@ -79,17 +78,17 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
      * 获取导出模型类
      *
      * @param targetMethod
-     * @param excelExport
+     * @param export
      * @param exportProperties
      * @return
      */
-    protected static Class<?> getModelClass(Method targetMethod, ExcelExport excelExport, ExportProperties exportProperties, ResultHandler<?> resultHandler) {
+    protected static Class<?> getModelClass(Method targetMethod, Export export, ExportProperties exportProperties, ResultHandler<?> resultHandler) {
         //没有导出模型类
-        if (excelExport.modelClass() == ExcelExport.NoneModel.class) {
+        if (export.modelClass() == Export.NoneModel.class) {
             return null;
         }
         //自动模型类时且是模板导出，则没有导出模型类
-        else if (excelExport.modelClass() == ExcelExport.AutoModel.class && StringUtil.isNotEmpty(excelExport.template())) {
+        else if (export.modelClass() == Export.AutoModel.class && StringUtil.isNotEmpty(export.template())) {
             return null;
         }
         //根据方法返回类型查找
@@ -102,11 +101,11 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
     /**
      * 获取导出格式
      */
-    protected static ExcelType getExcelType(ExcelExport excelExport, ExportProperties exportProperties) {
-        if (excelExport.excelType() != ExportExcelType.AUTO) {
-            return excelExport.excelType().getExcelType();
+    protected static ExcelType getExcelType(Export export, ExportProperties exportProperties) {
+        if (export.excelType() != ExportExcelType.AUTO) {
+            return export.excelType().getExcelType();
         }
-        if (StringUtil.isEmpty(excelExport.template())) {
+        if (StringUtil.isEmpty(export.template())) {
             String defaultExcelType = exportProperties.getDefaultExcelType();
             if ("xls".equalsIgnoreCase(defaultExcelType)) {
                 return ExcelType.XLS;
@@ -114,24 +113,18 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
                 return ExcelType.XLSX;
             }
         }
-        if (excelExport.template().endsWith(ExcelType.XLSX.getValue())) {
-            return ExcelType.XLSX;
-        } else if (excelExport.template().endsWith(ExcelType.XLS.getValue())) {
-            return ExcelType.XLS;
-        } else {
-            throw new IllegalArgumentException();
-        }
+        return TemplateUtils.getTemplateExcelType(export.template());
     }
 
     /**
      * 获取文件名
      *
-     * @param excelExport
+     * @param export
      * @return
      */
-    public static String buildFileName(ExcelExport excelExport) {
-        String name = ExportHandlers.of(excelExport.fileNameConvert())
-                .apply(excelExport.fileName());
+    public static String buildFileName(Export export) {
+        String name = ExportHandlers.of(export.fileNameConvert())
+                .apply(export.fileName());
         if (StringUtil.isEmpty(name)) {
             name = String.valueOf(System.currentTimeMillis());
         }
@@ -147,24 +140,7 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
     public static void setDownloadResponseHeaders(HttpServletResponse serverHttpResponse, ExportContext exportContext) {
         String fileName = exportContext.getFileName();
         String excelFileSuffix = exportContext.getExcelType().getValue();
-        setDownloadResponseHeaders(serverHttpResponse, fileName + excelFileSuffix);
-    }
-
-    /**
-     * 设置响应头信息
-     *
-     * @param serverHttpResponse
-     * @param fileName
-     */
-    public static void setDownloadResponseHeaders(HttpServletResponse serverHttpResponse, String fileName) {
-        // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
-        serverHttpResponse.addHeader(HTTP_HEADER_CONTENT_TYPE, "application/vnd.ms-excel;charset=UTF-8");
-        try {
-            // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-            fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.name()).replaceAll("\\+", "%20");
-        } catch (UnsupportedEncodingException ignored) {
-        }
-        serverHttpResponse.addHeader(HTTP_HEADER_CONTENT_DISPOSITION, "attachment;filename*=utf-8''" + fileName);
+        ResponseUtils.setDownloadFileHeader(serverHttpResponse, fileName + excelFileSuffix);
     }
 
     /**

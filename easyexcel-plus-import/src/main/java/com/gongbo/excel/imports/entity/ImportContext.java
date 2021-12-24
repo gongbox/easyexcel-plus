@@ -1,7 +1,7 @@
 package com.gongbo.excel.imports.entity;
 
 
-import com.gongbo.excel.imports.annotations.ExcelImport;
+import com.gongbo.excel.imports.annotations.Import;
 import com.gongbo.excel.imports.config.ImportProperties;
 import com.gongbo.excel.imports.param.ImportParam;
 import lombok.*;
@@ -21,7 +21,7 @@ public class ImportContext {
     /**
      * 导入注解信息
      */
-    private ExcelImport excelImport;
+    private Import anImport;
 
     /**
      * 导入模板
@@ -61,7 +61,7 @@ public class ImportContext {
     /**
      * 导入文件参数名称
      */
-    private String fileParamName;
+    private String fileParam;
 
     /**
      * 配置信息

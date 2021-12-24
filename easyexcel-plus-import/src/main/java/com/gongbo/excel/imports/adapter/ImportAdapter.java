@@ -1,22 +1,17 @@
 package com.gongbo.excel.imports.adapter;
 
 
+import com.gongbo.excel.common.adapter.Adapter;
 import com.gongbo.excel.imports.entity.ImportContext;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-public interface ImportAdapter {
-    /**
-     * 标签
-     *
-     * @return
-     */
-    String name();
+public interface ImportAdapter extends Adapter {
 
     /**
      * 读取数据
@@ -32,7 +27,7 @@ public interface ImportAdapter {
      * 响应模板
      *
      * @param importContext
-     * @param response
+     * @param outputStream
      */
-    void responseTemplate(ImportContext importContext, HttpServletResponse response) throws IOException;
+    void responseTemplate(ImportContext importContext, OutputStream outputStream) throws IOException;
 }

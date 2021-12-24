@@ -4,22 +4,28 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExportAdapters {
-    private static final Map<String, ExportAdapter> ADAPTERS_MAP = new HashMap<>();
+    private static final List<ExportAdapter> ADAPTERS = new LinkedList<>();
 
+    /**
+     * 添加适配器
+     *
+     * @param adapter
+     */
     public static void addAdapter(ExportAdapter adapter) {
-        ADAPTERS_MAP.put(adapter.name(), adapter);
+        ADAPTERS.add(adapter);
     }
 
+    /**
+     * 获取所有适配器
+     *
+     * @return
+     */
     public static Collection<ExportAdapter> getAdapters() {
-        return ADAPTERS_MAP.values();
-    }
-
-    public static ExportAdapter getAdapter(String name) {
-        return ADAPTERS_MAP.get(name);
+        return ADAPTERS;
     }
 }

@@ -4,7 +4,7 @@ package com.gongbo.excel.export.entity;
 import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.StringUtil;
-import com.gongbo.excel.export.annotations.ExcelExport;
+import com.gongbo.excel.export.annotations.Export;
 import com.gongbo.excel.export.config.ExportProperties;
 import com.gongbo.excel.export.param.ExportParam;
 import lombok.*;
@@ -28,12 +28,12 @@ public class ExportContext {
     /**
      * 导出注解信息
      */
-    private ExcelExport excelExport;
+    private Export export;
 
     /**
      * 导出对应模型类
      */
-    private Class<?> modelClass;
+    private Class<?> model;
 
     /**
      * 导出文件名

@@ -1,6 +1,5 @@
 package com.gongbo.excel.adapter.easyexcel;
 
-import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.EasyExcelFactory;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -16,7 +15,10 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.gongbo.excel.adapter.easyexcel.overides.MyExcelWriteFillExecutor;
 import com.gongbo.excel.common.enums.ExcelType;
-import com.gongbo.excel.common.utils.*;
+import com.gongbo.excel.common.utils.CollectionUtil;
+import com.gongbo.excel.common.utils.ReflectUtil;
+import com.gongbo.excel.common.utils.StringPool;
+import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.export.adapter.ExportAdapter;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.ExportFieldInfo;
@@ -27,7 +29,6 @@ import com.gongbo.excel.imports.entity.ImportContext;
 import com.gongbo.excel.imports.utils.ImportUtils;
 import org.apache.poi.ss.usermodel.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -95,9 +96,9 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
     }
 
     @Override
-    public void responseTemplate(ImportContext importContext, HttpServletResponse response) throws IOException {
+    public void responseTemplate(ImportContext importContext, OutputStream outputStream) throws IOException {
         //生成导入模板
-        ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write(response.getOutputStream(), importContext.getTargetArgumentClass());
+        ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write(outputStream, importContext.getTargetArgumentClass());
 
         excelWriterBuilder.sheet(importContext.getSheetNo(), importContext.getSheetName())
                 .doWrite(null);
@@ -108,7 +109,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         if (data == null) {
             data = Collections.emptyList();
         }
-        ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write(outputStream, exportContext.getModelClass());
+        ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write(outputStream, exportContext.getModel());
 
         //需要保留的字段名
         if (CollectionUtil.isNotEmpty(exportContext.getFieldInfos())) {
@@ -131,7 +132,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         if (data == null) {
             data = Collections.emptyList();
         }
-        ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(outputStream, exportContext.getModelClass());
+        ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write(outputStream, exportContext.getModel());
 
         excelWriterBuilder = excelWriterBuilder.withTemplate(templateInputStream);
 

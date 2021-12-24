@@ -1,2 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.gongbo.excel.EasyExcelPlusConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.gongbo.excel.EasyExcelPlusConfiguration

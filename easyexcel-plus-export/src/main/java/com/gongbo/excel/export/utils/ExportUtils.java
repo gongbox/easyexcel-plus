@@ -2,32 +2,19 @@ package com.gongbo.excel.export.utils;
 
 import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.export.config.ExportProperties;
-import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.exception.ExportFailedException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileUrlResource;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ExportUtils {
-
-    public static final String CLASSPATH_PATH_PREFIX = "classpath:";
-    public static final String FILE_PATH_PREFIX = "file:";
-
     /**
      * 获取方法返回模型类
      *
@@ -98,42 +85,6 @@ public class ExportUtils {
             return Arrays.asList((Object[]) result);
         } else {
             throw new IllegalArgumentException();
-        }
-    }
-
-    /**
-     * @param exportContext
-     * @return
-     * @throws IOException
-     */
-    public static InputStream getTemplateInputStream(ExportContext exportContext) throws IOException {
-        String template = exportContext.getTemplate();
-        String templatePath;
-        if (template.startsWith(CLASSPATH_PATH_PREFIX) || template.startsWith(FILE_PATH_PREFIX)) {
-            templatePath = template;
-        } else {
-            String separator = "";
-            if (!exportContext.getExportProperties().getTemplateDir().endsWith(File.separator) &&
-                    !template.startsWith(File.separator)) {
-                separator = File.separator;
-            }
-            templatePath = exportContext.getExportProperties().getTemplateDir() + separator + template;
-        }
-
-        InputStream inputStream;
-        try {
-            if (templatePath.startsWith(CLASSPATH_PATH_PREFIX)) {
-                ClassPathResource resource = new ClassPathResource(templatePath.replaceFirst(CLASSPATH_PATH_PREFIX, ""));
-                inputStream = resource.getInputStream();
-            } else if (templatePath.startsWith(FILE_PATH_PREFIX)) {
-                FileUrlResource fileUrlResource = new FileUrlResource(templatePath.replaceFirst(FILE_PATH_PREFIX, ""));
-                inputStream = fileUrlResource.getInputStream();
-            } else {
-                inputStream = Files.newInputStream(Paths.get(templatePath));
-            }
-            return inputStream;
-        } catch (FileNotFoundException e) {
-            throw new ExportFailedException(MessageFormat.format("not found template file of path:{0}", templatePath));
         }
     }
 }

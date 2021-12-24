@@ -1,12 +1,6 @@
 package com.gongbo.excel.imports.param;
 
-import com.gongbo.excel.common.utils.StringUtil;
-import com.gongbo.excel.common.utils.Utils;
 import lombok.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.text.MessageFormat;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -21,22 +15,6 @@ public class ImportParam {
      * 导出参数
      */
     private Type type;
-
-    public static ImportParam parse(HttpServletRequest request) {
-        String imports = Utils.firstNotEmpty(() -> request.getParameter(IMPORT), () -> request.getHeader(IMPORT));
-
-        if (StringUtil.isEmpty(imports)) {
-            return null;
-        }
-
-        Type type = Type.of(imports);
-
-        Objects.requireNonNull(type, MessageFormat.format("Import request parameter error:{0}", imports));
-
-        return ImportParam.builder()
-                .type(type)
-                .build();
-    }
 
     /**
      * 是否是获取导入模板

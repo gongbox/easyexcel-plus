@@ -11,11 +11,11 @@ import com.gongbo.excel.export.custom.defaults.DefaultFileNameConvert;
 
 import java.lang.annotation.*;
 
-@Repeatable(ExcelExports.class)
+@Repeatable(Exports.class)
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ExcelExport {
+public @interface Export {
 
     /**
      * 导出文件名,否则为时间戳

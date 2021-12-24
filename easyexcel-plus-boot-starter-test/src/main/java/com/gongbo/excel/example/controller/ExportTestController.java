@@ -7,7 +7,7 @@ import com.alibaba.excel.write.metadata.fill.FillWrapper;
 import com.gongbo.excel.common.utils.Times;
 import com.gongbo.excel.example.result.Result;
 import com.gongbo.excel.example.view.ExportDemoView;
-import com.gongbo.excel.export.annotations.ExcelExport;
+import com.gongbo.excel.export.annotations.Export;
 import com.gongbo.excel.export.constants.ExportExcelType;
 import com.gongbo.excel.export.core.ExportContextHolder;
 import com.gongbo.excel.export.custom.ExportDataConvert;
@@ -39,7 +39,7 @@ public class ExportTestController {
      * 导出-简单导出
      */
     @GetMapping(value = "test-normal")
-    @ExcelExport
+    @Export
     public Result<List<ExportDemoView>> testNormal() {
         return Result.success(ExportDemoView.data());
     }
@@ -48,7 +48,7 @@ public class ExportTestController {
      * 导出-设置导出文件名称
      */
     @GetMapping(value = "test-fileName")
-    @ExcelExport(fileName = "文件名称")
+    @Export(fileName = "文件名称")
     public Result<List<ExportDemoView>> testFilename() {
         return Result.success(ExportDemoView.data());
     }
@@ -57,7 +57,7 @@ public class ExportTestController {
      * 导出-动态设置文件名称
      */
     @GetMapping(value = "test-fileName-convert")
-    @ExcelExport(fileNameConvert = CustomFileNameConvert.class)
+    @Export(fileNameConvert = CustomFileNameConvert.class)
     public Result<List<ExportDemoView>> testFileNameConvert() {
         return Result.success(ExportDemoView.data());
     }
@@ -73,7 +73,7 @@ public class ExportTestController {
      *
      */
     @GetMapping(value = "test-fileName-business")
-    @ExcelExport
+    @Export
     public Result<List<ExportDemoView>> testFileNameBusiness() {
         if (ExportContextHolder.isExportExcel()) {
             ExportContextHolder.getContext().setFileName("动态文件名称");
@@ -85,7 +85,7 @@ public class ExportTestController {
      * 导出-固定Sheet名称
      */
     @GetMapping(value = "test-sheetName")
-    @ExcelExport(sheetName = "Sheet0")
+    @Export(sheetName = "Sheet0")
     public Result<List<ExportDemoView>> testSheetName() {
         return Result.success(ExportDemoView.data());
     }
@@ -94,7 +94,7 @@ public class ExportTestController {
      * 导出-动态设置Sheet名称
      */
     @GetMapping(value = "test-sheetName-business")
-    @ExcelExport
+    @Export
     public Result<List<ExportDemoView>> testSheetNameBusiness() {
         if (ExportContextHolder.isExportExcel()) {
             ExportContextHolder.getContext().setSheetName("业务中修改Sheet名称");
@@ -106,7 +106,7 @@ public class ExportTestController {
      * 导出到固定文件夹
      */
     @GetMapping(value = "test-out-path")
-    @ExcelExport(outputPath = "D:\\WorkDir\\temp\\file")
+    @Export(outputPath = "D:\\WorkDir\\temp\\file")
     public Result<List<ExportDemoView>> testOutPath() {
         return Result.success(ExportDemoView.data());
     }
@@ -115,7 +115,7 @@ public class ExportTestController {
      * 导出-字段过滤
      */
     @GetMapping(value = "test-filter")
-    @ExcelExport(fieldFilter = CustomFieldFilter.class)
+    @Export(fieldFilter = CustomFieldFilter.class)
     public Result<List<ExportDemoView>> testFilter() {
         return Result.success(ExportDemoView.data());
     }
@@ -131,7 +131,7 @@ public class ExportTestController {
      * 导出-设置导出文件格式
      */
     @GetMapping(value = "test-excelType")
-    @ExcelExport(excelType = ExportExcelType.XLS)
+    @Export(excelType = ExportExcelType.XLS)
     public Result<List<ExportDemoView>> testExcelType() {
         return Result.success(ExportDemoView.data());
     }
@@ -140,7 +140,7 @@ public class ExportTestController {
      * 导出-数据转换
      */
     @GetMapping(value = "test-dataConvert")
-    @ExcelExport(dataConvert = CustomExportDataConvert.class)
+    @Export(dataConvert = CustomExportDataConvert.class)
     public Result<List<ExportDemoView>> testDataConvert() {
         return Result.success(ExportDemoView.data());
     }
@@ -161,8 +161,8 @@ public class ExportTestController {
      * 导出-同一接口多种导出方式
      */
     @GetMapping(value = "test-tag")
-    @ExcelExport(tag = "xls", excelType = ExportExcelType.XLS)
-    @ExcelExport(tag = "xlsx", excelType = ExportExcelType.XLSX)
+    @Export(tag = "xls", excelType = ExportExcelType.XLS)
+    @Export(tag = "xlsx", excelType = ExportExcelType.XLSX)
     public Result<List<ExportDemoView>> testTag() {
         return Result.success(ExportDemoView.data());
     }
@@ -171,7 +171,7 @@ public class ExportTestController {
      * 导出-简单模版导出
      */
     @GetMapping(value = "test-template-simple")
-    @ExcelExport(template = "template-simply.xlsx")
+    @Export(template = "template-simply.xlsx")
     public Result<List<ExportDemoView>> testTemplateSimple() {
         return Result.success(ExportDemoView.data());
     }
@@ -180,7 +180,7 @@ public class ExportTestController {
      * 导出-单个Sheet模版导出
      */
     @GetMapping(value = "test-template-single-sheet")
-    @ExcelExport(template = "template-single-sheet.xlsx", dataConvert = TemplateSingleSheetDataConvert.class)
+    @Export(template = "template-single-sheet.xlsx", dataConvert = TemplateSingleSheetDataConvert.class)
     public Result<List<ExportDemoView>> testTemplateSingleSheet() {
         return Result.success(ExportDemoView.data());
     }
@@ -207,7 +207,7 @@ public class ExportTestController {
 
     //导出-模版导出（多个Sheet）：
     @GetMapping(value = "test-template-much-sheet")
-    @ExcelExport(template = "template-much-sheet.xlsx", dataConvert = TemplateMuchSheetDataConvert.class)
+    @Export(template = "template-much-sheet.xlsx", dataConvert = TemplateMuchSheetDataConvert.class)
     public Result<List<ExportDemoView>> testTemplateMuchSheet() {
         return Result.success(ExportDemoView.data());
     }
@@ -240,7 +240,7 @@ public class ExportTestController {
      * 只支持xls格式
      */
     @GetMapping(value = "test-template-formula")
-    @ExcelExport(template = "template-formula.xls", dataConvert = TemplateFormulaDataConvert.class)
+    @Export(template = "template-formula.xls", dataConvert = TemplateFormulaDataConvert.class)
     public Result<List<ExportDemoView>> testTemplateFormula() {
         return Result.success(ExportDemoView.data());
     }

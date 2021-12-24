@@ -56,7 +56,7 @@ public class ImportProxy {
                 //转换结果
                 Object result = importLifecycle.convertData(importContext, list);
                 //修改方法参数列表
-                Object[] args = importLifecycle.fillArguments(importContext, joinPoint, result);
+                Object[] args = importLifecycle.buildArguments(importContext, joinPoint, result);
                 //执行方法
                 return joinPoint.proceed(args);
             } else {

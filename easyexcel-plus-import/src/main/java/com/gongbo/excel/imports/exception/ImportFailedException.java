@@ -6,13 +6,6 @@ package com.gongbo.excel.imports.exception;
 public class ImportFailedException extends RuntimeException {
 
     /**
-     *
-     */
-    public ImportFailedException() {
-        super("import error");
-    }
-
-    /**
      * @param message
      */
     public ImportFailedException(String message) {

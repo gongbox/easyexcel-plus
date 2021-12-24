@@ -18,7 +18,7 @@ public class ImportAdvise {
     @Autowired
     private ImportProperties importProperties;
 
-    @Pointcut("@annotation(com.gongbo.excel.imports.annotations.ExcelImport)")
+    @Pointcut("@annotation(com.gongbo.excel.imports.annotations.Import)")
     public void doImport() {
     }
 
