@@ -9,15 +9,14 @@ import com.alibaba.excel.enums.WriteTypeEnum;
 import com.alibaba.excel.exception.ExcelGenerateException;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.gongbo.excel.adapter.easyexcel.overides.MyExcelWriteFillExecutor;
-import com.gongbo.excel.common.utils.CollectionUtil;
-import com.gongbo.excel.common.utils.ReflectUtil;
-import com.gongbo.excel.common.utils.StringPool;
-import com.gongbo.excel.common.utils.StringUtil;
+import com.gongbo.excel.common.enums.ExcelType;
+import com.gongbo.excel.common.utils.*;
 import com.gongbo.excel.export.adapter.ExportAdapter;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.ExportFieldInfo;
@@ -45,6 +44,16 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
     @Override
     public String name() {
         return "easy_excel";
+    }
+
+    private ExcelTypeEnum convert(ExcelType excelType) {
+        if (excelType.getValue().equals(ExcelTypeEnum.XLS.getValue())) {
+            return ExcelTypeEnum.XLS;
+        } else if (excelType.getValue().equals(ExcelTypeEnum.XLSX.getValue())) {
+            return ExcelTypeEnum.XLSX;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     @Override
@@ -78,7 +87,11 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         excelReaderSheetBuilder.doRead();
 
         //等待数据解析完成
-        return completableFuture.get(importContext.getImportProperties().getReadTimeout(), TimeUnit.MILLISECONDS);
+        Integer readTimeout = importContext.getImportProperties().getReadTimeout();
+        if (readTimeout == null || readTimeout <= 0) {
+            return completableFuture.get();
+        }
+        return completableFuture.get(readTimeout, TimeUnit.MILLISECONDS);
     }
 
     @Override
@@ -106,7 +119,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         }
 
         //设置导出文件格式
-        excelWriterBuilder = excelWriterBuilder.excelType(exportContext.getExcelType());
+        excelWriterBuilder = excelWriterBuilder.excelType(convert(exportContext.getExcelType()));
 
         ExcelWriterSheetBuilder excelWriterSheetBuilder = excelWriterBuilder
                 .sheet(StringUtil.firstNotEmpty(exportContext.getSheetName(), exportContext.getExportProperties().getDefaultSheetName()));
@@ -131,7 +144,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         }
 
         //设置导出文件格式
-        excelWriterBuilder = excelWriterBuilder.excelType(exportContext.getExcelType());
+        excelWriterBuilder = excelWriterBuilder.excelType(convert(exportContext.getExcelType()));
 
         ExcelWriter excelWriter = excelWriterBuilder
                 .build();
@@ -181,7 +194,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
                             .build();
 
                     //填充
-                    fill(excelWriter.writeContext(), excelWriteFillExecutor, exportFillData.getData(), exportFillData.getFillConfig(), writeSheet, true);
+                    fill(excelWriter.writeContext(), excelWriteFillExecutor, exportFillData.getData(), (FillConfig) exportFillData.getFillConfig(), writeSheet, true);
                 }
             } else {
                 WriteSheet writeSheet = new ExcelWriterSheetBuilder(excelWriter)
@@ -189,7 +202,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
                         .sheetName(exportFillData.getSheetName())
                         .build();
                 //填充
-                fill(excelWriter.writeContext(), excelWriteFillExecutor, exportFillData.getData(), exportFillData.getFillConfig(), writeSheet, false);
+                fill(excelWriter.writeContext(), excelWriteFillExecutor, exportFillData.getData(), (FillConfig) exportFillData.getFillConfig(), writeSheet, false);
             }
         }
 

@@ -1,6 +1,6 @@
 package com.gongbo.excel.export.core.lifecycle;
 
-import com.alibaba.excel.support.ExcelTypeEnum;
+import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.common.utils.Utils;
 import com.gongbo.excel.common.utils.WebUtils;
@@ -71,7 +71,7 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
         String fileName = buildFileName(excelExport);
 
         //导出文件格式
-        ExcelTypeEnum excelType = getExcelType(excelExport, exportProperties);
+        ExcelType excelType = getExcelType(excelExport, exportProperties);
 
         //获取输出路径
         String outputPath = excelExport.outputPath();

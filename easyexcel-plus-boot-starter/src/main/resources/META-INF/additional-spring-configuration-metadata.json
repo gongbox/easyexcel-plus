@@ -1,0 +1,49 @@
+{
+  "properties": [
+    {
+      "name": "easyexcel-plus.export.default-sheet-name",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.export.default-sheet-name."
+    },
+    {
+      "name": "easyexcel-plus.export.fill-key",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.export.fill-key."
+    },
+    {
+      "name": "easyexcel-plus.export.template-dir",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.export.template-dir."
+    },
+    {
+      "name": "easyexcel-plus.export.default-excel-type",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.export.default-excel-type."
+    },
+    {
+      "name": "easyexcel-plus.export.default-export-by",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.export.default-export-by."
+    },
+    {
+      "name": "easyexcel-plus.import.default-sheet-name",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.import.default-sheet-name."
+    },
+    {
+      "name": "easyexcel-plus.import.default-import-by",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.import.default-import-by."
+    },
+    {
+      "name": "easyexcel-plus.import.template-dir",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.import.template-dir."
+    },
+    {
+      "name": "easyexcel-plus.import.read-timeout",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.import.read-timeout."
+    }
+  ]
+}

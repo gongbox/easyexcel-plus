@@ -1,23 +1,30 @@
 package com.gongbo.excel.imports.utils;
 
 
-import com.alibaba.excel.support.ExcelTypeEnum;
-import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.imports.annotations.ImportTarget;
 import com.gongbo.excel.imports.entity.ImportContext;
+import com.gongbo.excel.imports.exception.ImportFailedException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileUrlResource;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.*;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImportUtils {
+
+    public static final String CLASSPATH_PATH_PREFIX = "classpath:";
+    public static final String FILE_PATH_PREFIX = "file:";
 
     /**
      * 获取参数位置
@@ -135,25 +142,51 @@ public class ImportUtils {
         throw new IllegalArgumentException();
     }
 
-    public static void addHeader(ImportContext importContext, HttpServletResponse response) {
+    public static void addHeader(String fileName, HttpServletResponse response) {
         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
         response.addHeader("Content-Type", "application/vnd.ms-excel;charset=UTF-8");
-
-        String templateFileName = importContext.getTemplateFilename();
-
-        if (StringUtil.isEmpty(templateFileName)) {
-            templateFileName = String.valueOf(System.currentTimeMillis());
-        }
-
-        String excelFileSuffix = ExcelTypeEnum.XLSX.getValue();
-        templateFileName = templateFileName + excelFileSuffix;
-
         try {
             // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-            templateFileName = URLEncoder.encode(templateFileName, StandardCharsets.UTF_8.name()).replaceAll("\\+", "%20");
+            fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.name()).replaceAll("\\+", "%20");
         } catch (UnsupportedEncodingException ignored) {
         }
 
-        response.addHeader("Content-Disposition", "attachment;filename*=utf-8''" + templateFileName + excelFileSuffix);
+        response.addHeader("Content-Disposition", "attachment;filename*=utf-8''" + fileName);
+    }
+
+    /**
+     * @param importContext
+     * @return
+     * @throws IOException
+     */
+    public static InputStream getTemplateInputStream(ImportContext importContext) throws IOException {
+        String template = importContext.getTemplate();
+        String templatePath;
+        if (template.startsWith(CLASSPATH_PATH_PREFIX) || template.startsWith(FILE_PATH_PREFIX)) {
+            templatePath = template;
+        } else {
+            String separator = "";
+            if (!importContext.getImportProperties().getTemplateDir().endsWith(File.separator) &&
+                    !template.startsWith(File.separator)) {
+                separator = File.separator;
+            }
+            templatePath = importContext.getImportProperties().getTemplateDir() + separator + template;
+        }
+
+        InputStream inputStream;
+        try {
+            if (templatePath.startsWith(CLASSPATH_PATH_PREFIX)) {
+                ClassPathResource resource = new ClassPathResource(templatePath.replaceFirst(CLASSPATH_PATH_PREFIX, ""));
+                inputStream = resource.getInputStream();
+            } else if (templatePath.startsWith(FILE_PATH_PREFIX)) {
+                FileUrlResource fileUrlResource = new FileUrlResource(templatePath.replaceFirst(FILE_PATH_PREFIX, ""));
+                inputStream = fileUrlResource.getInputStream();
+            } else {
+                inputStream = Files.newInputStream(Paths.get(templatePath));
+            }
+            return inputStream;
+        } catch (FileNotFoundException e) {
+            throw new ImportFailedException(MessageFormat.format("not found template file of path:{0}", templatePath));
+        }
     }
 }

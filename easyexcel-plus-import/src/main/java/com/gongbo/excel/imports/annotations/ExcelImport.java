@@ -9,6 +9,11 @@ import java.lang.annotation.*;
 public @interface ExcelImport {
 
     /**
+     * 导入模板
+     */
+    String template() default "";
+
+    /**
      * 导入模板下载文件名,否则为时间戳
      */
     String templateFilename() default "";

@@ -1,13 +1,13 @@
 package com.gongbo.excel.export.core.lifecycle;
 
-import com.alibaba.excel.support.ExcelTypeEnum;
+import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.CollectionUtil;
 import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.export.annotations.ExcelExport;
 import com.gongbo.excel.export.annotations.ExcelExports;
 import com.gongbo.excel.export.config.ExportProperties;
-import com.gongbo.excel.export.constants.ExcelType;
+import com.gongbo.excel.export.constants.ExportExcelType;
 import com.gongbo.excel.export.core.ExportHandlers;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.exception.ExportFailedException;
@@ -102,22 +102,22 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
     /**
      * 获取导出格式
      */
-    protected static ExcelTypeEnum getExcelType(ExcelExport excelExport, ExportProperties exportProperties) {
-        if (excelExport.excelType() != ExcelType.AUTO) {
-            return excelExport.excelType().getExcelTypeEnum();
+    protected static ExcelType getExcelType(ExcelExport excelExport, ExportProperties exportProperties) {
+        if (excelExport.excelType() != ExportExcelType.AUTO) {
+            return excelExport.excelType().getExcelType();
         }
         if (StringUtil.isEmpty(excelExport.template())) {
             String defaultExcelType = exportProperties.getDefaultExcelType();
             if ("xls".equalsIgnoreCase(defaultExcelType)) {
-                return ExcelTypeEnum.XLS;
+                return ExcelType.XLS;
             } else {
-                return ExcelTypeEnum.XLSX;
+                return ExcelType.XLSX;
             }
         }
-        if (excelExport.template().endsWith(ExcelTypeEnum.XLSX.getValue())) {
-            return ExcelTypeEnum.XLSX;
-        } else if (excelExport.template().endsWith(ExcelTypeEnum.XLS.getValue())) {
-            return ExcelTypeEnum.XLS;
+        if (excelExport.template().endsWith(ExcelType.XLSX.getValue())) {
+            return ExcelType.XLSX;
+        } else if (excelExport.template().endsWith(ExcelType.XLS.getValue())) {
+            return ExcelType.XLS;
         } else {
             throw new IllegalArgumentException();
         }

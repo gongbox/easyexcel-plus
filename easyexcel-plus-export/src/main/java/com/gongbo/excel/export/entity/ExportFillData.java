@@ -1,7 +1,6 @@
 package com.gongbo.excel.export.entity;
 
 
-import com.alibaba.excel.write.metadata.fill.FillConfig;
 import lombok.*;
 
 @Setter
@@ -29,7 +28,7 @@ public class ExportFillData {
     /**
      * 填充配置
      */
-    private FillConfig fillConfig;
+    private Object fillConfig;
 
     /**
      * 填充数据 map/list/FillWrapper等类型

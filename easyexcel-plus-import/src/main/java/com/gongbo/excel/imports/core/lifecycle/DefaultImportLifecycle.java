@@ -1,5 +1,6 @@
 package com.gongbo.excel.imports.core.lifecycle;
 
+import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.common.utils.Utils;
 import com.gongbo.excel.common.utils.WebUtils;
@@ -12,12 +13,14 @@ import com.gongbo.excel.imports.param.ImportParam;
 import com.gongbo.excel.imports.utils.ImportUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.util.FileCopyUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -102,6 +105,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
 
         return ImportContext.builder()
                 .importProperties(importProperties)
+                .template(excelImport.template())
                 .templateFilename(excelImport.templateFilename())
                 .importParam(importParam)
                 .excelImport(excelImport)
@@ -144,10 +148,28 @@ public class DefaultImportLifecycle implements ImportLifecycle {
     @Override
     public void responseTemplate(ImportContext importContext, ImportAdapter importAdapter) throws IOException {
         HttpServletResponse response = WebUtils.getCurrentResponse();
-        //设置响应头信息
-        ImportUtils.addHeader(importContext, response);
 
-        importAdapter.responseTemplate(importContext, response);
+        String templateFilename = importContext.getTemplateFilename();
+        if (StringUtil.isEmpty(templateFilename)) {
+            templateFilename = String.valueOf(System.currentTimeMillis());
+        }
+
+        if (StringUtil.isNotEmpty(importContext.getTemplate())) {
+            if (importContext.getTemplate().contains(ExcelType.XLSX.getValue())) {
+                templateFilename += ExcelType.XLSX.getValue();
+            } else {
+                templateFilename += ExcelType.XLS.getValue();
+            }
+            //设置响应头信息
+            ImportUtils.addHeader(templateFilename, response);
+            InputStream templateInputStream = ImportUtils.getTemplateInputStream(importContext);
+            FileCopyUtils.copy(templateInputStream, response.getOutputStream());
+        } else {
+            templateFilename += ExcelType.XLSX.getValue();
+            //设置响应头信息
+            ImportUtils.addHeader(templateFilename, response);
+            importAdapter.responseTemplate(importContext, response);
+        }
     }
 
     /**

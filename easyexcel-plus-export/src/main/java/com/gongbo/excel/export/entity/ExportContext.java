@@ -1,7 +1,7 @@
 package com.gongbo.excel.export.entity;
 
 
-import com.alibaba.excel.support.ExcelTypeEnum;
+import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.export.annotations.ExcelExport;
@@ -53,7 +53,7 @@ public class ExportContext {
     /**
      * excel文件格式
      */
-    private ExcelTypeEnum excelType;
+    private ExcelType excelType;
 
     /**
      * 输出文件地址

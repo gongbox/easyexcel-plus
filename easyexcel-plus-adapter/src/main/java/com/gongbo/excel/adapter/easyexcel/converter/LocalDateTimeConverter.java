@@ -1,4 +1,4 @@
-package com.gongbo.excel.common.converter;
+package com.gongbo.excel.adapter.easyexcel.converter;
 
 
 import com.alibaba.excel.converters.Converter;
@@ -6,15 +6,15 @@ import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.CellData;
 import com.alibaba.excel.metadata.GlobalConfiguration;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
-import com.gongbo.excel.common.utils.Times;
+import com.alibaba.excel.util.DateUtils;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LocalTimeConverter implements Converter<LocalTime> {
+public class LocalDateTimeConverter implements Converter<LocalDateTime> {
     @Override
     public Class<?> supportJavaTypeKey() {
-        return LocalTime.class;
+        return LocalDateTime.class;
     }
 
     @Override
@@ -23,20 +23,20 @@ public class LocalTimeConverter implements Converter<LocalTime> {
     }
 
     @Override
-    public LocalTime convertToJavaData(CellData cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public LocalDateTime convertToJavaData(CellData cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         if (contentProperty == null || contentProperty.getDateTimeFormatProperty() == null) {
-            return LocalTime.parse(cellData.getStringValue(), DateTimeFormatter.ofPattern(Times.Pattern.DEFAULT_TIME));
+            return LocalDateTime.parse(cellData.getStringValue(), DateTimeFormatter.ofPattern(DateUtils.DATE_FORMAT_19));
         } else {
-            return LocalTime.parse(cellData.getStringValue(),
+            return LocalDateTime.parse(cellData.getStringValue(),
                     DateTimeFormatter.ofPattern(contentProperty.getDateTimeFormatProperty().getFormat()));
         }
     }
 
     @Override
-    public CellData<?> convertToExcelData(LocalTime value,
+    public CellData<?> convertToExcelData(LocalDateTime value,
                                           ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         if (contentProperty == null || contentProperty.getDateTimeFormatProperty() == null) {
-            return new CellData<>(value.format(DateTimeFormatter.ofPattern(Times.Pattern.DEFAULT_TIME)));
+            return new CellData<>(value.format(DateTimeFormatter.ofPattern(DateUtils.DATE_FORMAT_19)));
         } else {
             return new CellData<>(value.format(DateTimeFormatter.ofPattern(contentProperty.getDateTimeFormatProperty().getFormat())));
         }

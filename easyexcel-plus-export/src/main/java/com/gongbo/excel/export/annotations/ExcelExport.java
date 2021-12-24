@@ -1,7 +1,7 @@
 package com.gongbo.excel.export.annotations;
 
 
-import com.gongbo.excel.export.constants.ExcelType;
+import com.gongbo.excel.export.constants.ExportExcelType;
 import com.gongbo.excel.export.custom.ExportDataConvert;
 import com.gongbo.excel.export.custom.FieldFilter;
 import com.gongbo.excel.export.custom.FileNameConvert;
@@ -70,7 +70,7 @@ public @interface ExcelExport {
     /**
      * 导出excel文件格式
      */
-    ExcelType excelType() default ExcelType.AUTO;
+    ExportExcelType excelType() default ExportExcelType.AUTO;
 
     /**
      * 指定导出方式,否则为默认值

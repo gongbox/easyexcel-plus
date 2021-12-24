@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "easyexcel-plus.import.read-timeout",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.import.read-timeout."
+    },
+    {
+      "name": "easyexcel-plus.import.default-import-by",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.import.default-import-by."
+    },
+    {
+      "name": "easyexcel-plus.import.template-dir",
+      "type": "java.lang.String",
+      "description": "Description for easyexcel-plus.import.template-dir."
+    }
+  ] }

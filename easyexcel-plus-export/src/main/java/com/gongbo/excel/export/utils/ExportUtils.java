@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileUrlResource;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,7 +112,12 @@ public class ExportUtils {
         if (template.startsWith(CLASSPATH_PATH_PREFIX) || template.startsWith(FILE_PATH_PREFIX)) {
             templatePath = template;
         } else {
-            templatePath = Paths.get(exportContext.getExportProperties().getTemplateDir(), template).toString();
+            String separator = "";
+            if (!exportContext.getExportProperties().getTemplateDir().endsWith(File.separator) &&
+                    !template.startsWith(File.separator)) {
+                separator = File.separator;
+            }
+            templatePath = exportContext.getExportProperties().getTemplateDir() + separator + template;
         }
 
         InputStream inputStream;

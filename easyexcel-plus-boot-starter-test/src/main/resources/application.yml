@@ -7,7 +7,23 @@ server:
 
 easyexcel-plus:
   export:
-    template-dir: classpath:exportTemplates
+    #默认导出Sheet名称
+    default-sheet-name: Sheet1
+    #模板文件路径
+    template-dir: classpath:templates
+    #默认导出文件格式
+    default-excel-type: xlsx
+    #默认导出方式
+    default-export-by: easy_excel
+  import:
+    #默认导入读取的Sheet名称
+    default-sheet-name: Sheet1
+    #模板文件路径
+    template-dir: classpath:templates
+    #默认导入方式
+    default-import-by: easy_excel
+    #读取excel超时时间，不设置或设置为0时无读取时间限制
+    read-timeout: 60000
 
 
 

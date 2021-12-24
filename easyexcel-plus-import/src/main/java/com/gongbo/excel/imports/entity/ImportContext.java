@@ -24,6 +24,11 @@ public class ImportContext {
     private ExcelImport excelImport;
 
     /**
+     * 导入模板
+     */
+    private String template;
+
+    /**
      * 导入模板文件名
      */
     private String templateFilename;

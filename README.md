@@ -132,9 +132,28 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
     application:
       name: export_demo
 
+  server:
+    port: 80
+  
   easyexcel-plus:
     export:
-      template-dir: classpath:exportTemplates/
+      #默认导出Sheet名称
+      default-sheet-name: Sheet1
+      #模板文件路径
+      template-dir: classpath:templates
+      #默认导出文件格式
+      default-excel-type: xlsx
+      #默认导出方式
+      default-export-by: easy_excel
+    import:
+      #默认导入读取的Sheet名称
+      default-sheet-name: Sheet1
+      #模板文件路径
+      template-dir: classpath:templates
+      #默认导入方式
+      default-import-by: easy_excel
+      #读取excel超时时间，不设置或设置为0时无读取时间限制
+      read-timeout: 60000
   ```
 ### 使用
 
@@ -381,6 +400,15 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
    ```
   >演示地址：
   > 导入-模版下载：http://8.129.7.25/import/test-template?import=template
+- **导入-自定义模版下载**
+    ```java
+    @GetMapping(value = "test-custom-template")
+    @ExcelImport(modelClass = ExportDemoView.class, template = "template-import.xlsx", templateFilename = "自定义模板")
+    public void testCustomTemplate() {
+    }
+   ```
+  >演示地址：
+  > 导入-自定义模版下载：http://8.129.7.25/import/test-custom-template?import=template
 - **导入-导入**
     ```java
     @PostMapping(value = "test-import")

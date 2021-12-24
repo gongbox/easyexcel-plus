@@ -41,6 +41,14 @@ public class ImportControllerTest {
     }
 
     /**
+     * 导入-自定义模版下载
+     */
+    @GetMapping(value = "test-custom-template")
+    @ExcelImport(modelClass = ExportDemoView.class, template = "template-import.xlsx", templateFilename = "自定义模板")
+    public void testCustomTemplate() {
+    }
+
+    /**
      * 导入-数据导入、模版下载
      * RequestBody注解required属性 必须设置为false
      * 必须支持GET、POST请求

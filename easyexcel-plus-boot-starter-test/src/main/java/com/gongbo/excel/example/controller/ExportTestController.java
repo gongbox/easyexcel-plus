@@ -8,7 +8,7 @@ import com.gongbo.excel.common.utils.Times;
 import com.gongbo.excel.example.result.Result;
 import com.gongbo.excel.example.view.ExportDemoView;
 import com.gongbo.excel.export.annotations.ExcelExport;
-import com.gongbo.excel.export.constants.ExcelType;
+import com.gongbo.excel.export.constants.ExportExcelType;
 import com.gongbo.excel.export.core.ExportContextHolder;
 import com.gongbo.excel.export.custom.ExportDataConvert;
 import com.gongbo.excel.export.custom.FieldFilter;
@@ -131,7 +131,7 @@ public class ExportTestController {
      * 导出-设置导出文件格式
      */
     @GetMapping(value = "test-excelType")
-    @ExcelExport(excelType = ExcelType.XLS)
+    @ExcelExport(excelType = ExportExcelType.XLS)
     public Result<List<ExportDemoView>> testExcelType() {
         return Result.success(ExportDemoView.data());
     }
@@ -161,8 +161,8 @@ public class ExportTestController {
      * 导出-同一接口多种导出方式
      */
     @GetMapping(value = "test-tag")
-    @ExcelExport(tag = "xls", excelType = ExcelType.XLS)
-    @ExcelExport(tag = "xlsx", excelType = ExcelType.XLSX)
+    @ExcelExport(tag = "xls", excelType = ExportExcelType.XLS)
+    @ExcelExport(tag = "xlsx", excelType = ExportExcelType.XLSX)
     public Result<List<ExportDemoView>> testTag() {
         return Result.success(ExportDemoView.data());
     }
