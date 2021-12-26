@@ -58,7 +58,7 @@ public class DefaultExportLifecycle extends AbstractExportLifeCycle implements E
 
     @Override
     public ExportContext prepareContext(ExportProperties exportProperties, ExportParam exportParam, Method targetMethod) {
-        //查找对应ExcelExport注解
+        //查找对应Export注解
         Export export = findExportAnnotation(exportParam.getExportTag(), targetMethod);
 
         //获取对应模型类

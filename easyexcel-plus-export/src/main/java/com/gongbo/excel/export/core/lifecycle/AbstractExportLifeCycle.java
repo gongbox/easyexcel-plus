@@ -44,7 +44,7 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
         //没有找到注解
         if (annotations == null || annotations.length == 0) {
             throw new NotSupportExportException(MessageFormat.format(
-                    "This method:{0} not support export, to enable export, please configure ExcelExport annotation on the request method to enable export!",
+                    "This method:{0} not support export, to enable export, please configure Export annotation on the request method to enable export!",
                     targetMethod.getName()));
         }
 
@@ -94,7 +94,7 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
         //根据方法返回类型查找
         else {
             return Optional.ofNullable(ExportUtils.getModelClass(targetMethod, exportProperties, resultHandler))
-                    .orElseThrow(() -> new IllegalArgumentException("unable to get the export model class, please check the export method or add the modelClass attribute to the ExcelExport annotation!"));
+                    .orElseThrow(() -> new IllegalArgumentException("unable to get the export model class, please check the export method or add the modelClass attribute to the Export annotation!"));
         }
     }
 

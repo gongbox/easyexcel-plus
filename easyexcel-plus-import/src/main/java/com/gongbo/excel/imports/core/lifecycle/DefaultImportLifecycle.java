@@ -75,7 +75,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
         Import importAnnotation = targetMethod.getAnnotation(Import.class);
         //检查是否支持导入
         if (importAnnotation == null) {
-            throw new NotSupportImportException(MessageFormat.format("this method:{0} not support import, to enable import, please configure ExcelImport annotation on the request method to enable import", targetMethod.getName()));
+            throw new NotSupportImportException(MessageFormat.format("this method:{0} not support import, to enable import, please configure Import annotation on the request method to enable import", targetMethod.getName()));
         }
 
         //目标参数位置
@@ -91,7 +91,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
             modelClass = ImportUtils.getModelClass(targetMethod, argIndex);
 
             if (modelClass == null) {
-                throw new IllegalArgumentException("unable to get the import model class, please check the import method or add the modelClass attribute to the ExcelImport annotation!");
+                throw new IllegalArgumentException("unable to get the import model class, please check the import method or add the modelClass attribute to the Import annotation!");
             }
         }
 
