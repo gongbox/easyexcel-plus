@@ -45,6 +45,33 @@ public class ExportTestController {
     }
 
     /**
+     * 导出-简单导出(直接返回数组)
+     */
+    @GetMapping(value = "test-normal-array")
+    @Export
+    public ExportDemoView[] testNormalData() {
+        return ExportDemoView.data().toArray(new ExportDemoView[0]);
+    }
+
+    /**
+     * 导出-简单导出(直接返回集合)
+     */
+    @GetMapping(value = "test-normal-list")
+    @Export
+    public List<ExportDemoView> testNormalList() {
+        return ExportDemoView.data();
+    }
+
+    /**
+     * 导出-简单导出(直接返回迭代器)
+     */
+    @GetMapping(value = "test-normal-iterable")
+    @Export
+    public Iterable<ExportDemoView> testNormalIterable() {
+        return ExportDemoView.data();
+    }
+
+    /**
      * 导出-设置导出文件名称
      */
     @GetMapping(value = "test-fileName")

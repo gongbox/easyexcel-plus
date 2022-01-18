@@ -4,6 +4,8 @@ import cn.hutool.core.util.RandomUtil;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
+import com.gongbo.excel.adapter.easyexcel.converter.DefaultEnumConvert;
+import com.gongbo.excel.example.constants.GenderEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -44,6 +46,9 @@ public class ExportDemoView {
     @ExcelProperty("时间")
     @ColumnWidth(20)
     private Date date = new Date();
+
+    @ExcelProperty(value = "性别", converter = DefaultEnumConvert.class)
+    private GenderEnum gender = GenderEnum.valueOf(RandomUtil.randomInt(3));
 
     public static List<ExportDemoView> data() {
         return Stream.generate(ExportDemoView::new)

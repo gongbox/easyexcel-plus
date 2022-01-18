@@ -1,7 +1,8 @@
 package com.gongbo.excel.example.config;
 
-import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.example.result.Result;
+import com.gongbo.excel.export.core.resulthandler.DefaultResultHandler;
+import com.gongbo.excel.export.core.resulthandler.ResultHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,16 +10,19 @@ import org.springframework.context.annotation.Configuration;
 public class EasyExcelPlusConfig {
 
     @Bean
-    public ResultHandler<Result> resultBuilder() {
-        return new ResultHandler<Result>() {
+    public ResultHandler resultBuilder() {
+        return new DefaultResultHandler() {
             @Override
-            public Class<Result> resultClass() {
+            public Class<?> resultClass() {
                 return Result.class;
             }
 
             @Override
-            public Object getData(Result result) {
-                return result.getData();
+            public Object getResultData(Object result) {
+                if (result instanceof Result) {
+                    return ((Result<?>) result).getData();
+                }
+                return super.getResultData(result);
             }
         };
     }

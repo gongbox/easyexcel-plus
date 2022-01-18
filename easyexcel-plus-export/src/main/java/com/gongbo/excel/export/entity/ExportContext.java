@@ -2,10 +2,10 @@ package com.gongbo.excel.export.entity;
 
 
 import com.gongbo.excel.common.enums.ExcelType;
-import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.StringUtil;
 import com.gongbo.excel.export.annotations.Export;
 import com.gongbo.excel.export.config.ExportProperties;
+import com.gongbo.excel.export.core.resulthandler.ResultHandler;
 import com.gongbo.excel.export.param.ExportParam;
 import lombok.*;
 
@@ -88,7 +88,7 @@ public class ExportContext {
     /**
      *
      */
-    private ResultHandler<?> resultHandler;
+    private ResultHandler resultHandler;
 
     /**
      * 是否输出目录

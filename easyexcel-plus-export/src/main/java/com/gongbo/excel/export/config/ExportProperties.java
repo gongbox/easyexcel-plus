@@ -1,6 +1,6 @@
 package com.gongbo.excel.export.config;
 
-import com.gongbo.excel.common.result.ResultHandler;
+import com.gongbo.excel.export.core.resulthandler.ResultHandler;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,5 +41,5 @@ public class ExportProperties {
     private String defaultExportBy = "easy_excel";
 
     @Autowired
-    private ResultHandler<?> resultHandler;
+    private ResultHandler resultHandler;
 }

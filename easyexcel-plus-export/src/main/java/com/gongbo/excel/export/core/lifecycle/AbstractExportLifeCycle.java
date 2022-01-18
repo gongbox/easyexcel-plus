@@ -1,7 +1,6 @@
 package com.gongbo.excel.export.core.lifecycle;
 
 import com.gongbo.excel.common.enums.ExcelType;
-import com.gongbo.excel.common.result.ResultHandler;
 import com.gongbo.excel.common.utils.CollectionUtil;
 import com.gongbo.excel.common.utils.ResponseUtils;
 import com.gongbo.excel.common.utils.StringUtil;
@@ -11,10 +10,10 @@ import com.gongbo.excel.export.annotations.Exports;
 import com.gongbo.excel.export.config.ExportProperties;
 import com.gongbo.excel.export.constants.ExportExcelType;
 import com.gongbo.excel.export.core.ExportHandlers;
+import com.gongbo.excel.export.core.resulthandler.ResultHandler;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.exception.ExportFailedException;
 import com.gongbo.excel.export.exception.NotSupportExportException;
-import com.gongbo.excel.export.utils.ExportUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
@@ -82,7 +81,7 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
      * @param exportProperties
      * @return
      */
-    protected static Class<?> getModelClass(Method targetMethod, Export export, ExportProperties exportProperties, ResultHandler<?> resultHandler) {
+    protected static Class<?> getModelClass(Method targetMethod, Export export, ExportProperties exportProperties, ResultHandler resultHandler) {
         //没有导出模型类
         if (export.modelClass() == Export.NoneModel.class) {
             return null;
@@ -93,7 +92,7 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
         }
         //根据方法返回类型查找
         else {
-            return Optional.ofNullable(ExportUtils.getModelClass(targetMethod, exportProperties, resultHandler))
+            return Optional.ofNullable(resultHandler.getModelType(targetMethod))
                     .orElseThrow(() -> new IllegalArgumentException("unable to get the export model class, please check the export method or add the modelClass attribute to the Export annotation!"));
         }
     }
