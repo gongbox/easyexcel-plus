@@ -98,6 +98,9 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
       @ColumnWidth(20)
       private Date date = new Date();
   
+      @ExcelProperty(value = "性别", converter = DefaultEnumConvert.class)
+      private GenderEnum gender = GenderEnum.valueOf(RandomUtil.randomInt(3));
+  
       public static List<ExportDemoView> data() {
           return Stream.generate(ExportDemoView::new)
                   .limit(RandomUtil.randomInt(1, 20))
@@ -110,20 +113,22 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
     @Configuration
     public class EasyExcelPlusConfig {
     
-        @Bean
-        public ResultHandler<Result> resultBuilder() {
-            return new ResultHandler<Result>() {
-                @Override
-                public Class<Result> resultClass() {
-                    return Result.class;
-                }
-    
-                @Override
-                public Object getData(Result result) {
-                    return result.getData();
-                }
-            };
-        }
+      @Bean
+      public ResultHandler resultBuilder() {
+          return new DefaultResultHandler() {
+              @Override
+              public Class<?> resultClass() {
+                  return Result.class;
+              }
+              @Override
+              public Object getResultData(Object result) {
+                  if (result instanceof Result) {
+                      return ((Result<?>) result).getData();
+                  }
+                  return super.getResultData(result);
+              }
+          };
+      }
     }
     ```
 - 配置文件:
@@ -391,6 +396,38 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
     }
     ```
   >演示地址：http://8.129.7.25/export/test-template-formula?export=excel
+- **导出-无包装类**
+  ```java
+    /**
+     * 导出-简单导出(直接返回数组)
+     */
+    @GetMapping(value = "test-normal-array")
+    @Export
+    public ExportDemoView[] testNormalData() {
+        return ExportDemoView.data().toArray(new ExportDemoView[0]);
+    }
+
+    /**
+     * 导出-简单导出(直接返回集合)
+     */
+    @GetMapping(value = "test-normal-list")
+    @Export
+    public List<ExportDemoView> testNormalList() {
+        return ExportDemoView.data();
+    }
+
+    /**
+     * 导出-简单导出(直接返回迭代器)
+     */
+    @GetMapping(value = "test-normal-iterable")
+    @Export
+    public Iterable<ExportDemoView> testNormalIterable() {
+        return ExportDemoView.data();
+    }
+  ```
+>演示地址：http://8.129.7.25/export/test-normal-array?export=excel
+>演示地址：http://8.129.7.25/export/test-normal-list?export=excel
+>演示地址：http://8.129.7.25/export/test-normal-iterable?export=excel
 - **导入-模板下载**
     ```java
     @GetMapping(value = "test-template")
