@@ -24,7 +24,7 @@ public class DefaultEnumConvert implements Converter<Object> {
 
     @Override
     public Object convertToJavaData(ReadCellData cellData, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        String stringValue = cellData.getStringValue();
+        String stringValue = cellData.getStringValue().trim();
 
         //获取枚举类型
         Class<?> type = excelContentProperty.getField().getType();
