@@ -37,7 +37,7 @@ public class DefaultEnumConvert implements Converter<Object> {
                     }
                     return excelValue.value() == ExcelValue.Support.READ || excelValue.value() == ExcelValue.Support.ALL;
                 }).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("在枚举类上没有找到支持输入的ExcelEnumValue注解"));
+                .orElseThrow(() -> new IllegalArgumentException("在枚举类上没有找到支持输入的ExcelValue注解"));
         //允许访问私有属性
         field.setAccessible(true);
         for (Object enumConstant : type.getEnumConstants()) {
@@ -63,7 +63,7 @@ public class DefaultEnumConvert implements Converter<Object> {
                     return excelValue.value() == ExcelValue.Support.WRITE || excelValue.value() == ExcelValue.Support.ALL;
 
                 }).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("在枚举类上没有找到支持输出的ExcelEnumValue注解"));
+                .orElseThrow(() -> new IllegalArgumentException("在枚举类上没有找到支持输出的ExcelValue注解"));
 
         //允许访问私有属性
         field.setAccessible(true);
