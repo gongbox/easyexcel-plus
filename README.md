@@ -139,25 +139,25 @@ EasyExcelPlus支持多种多样的自定义配置，比如设置导出文件名�
 
   server:
     port: 80
-  
+  #以下配置项可根据需要配置，或者不配置使用默认值即可
   easyexcel-plus:
     export:
-      #默认导出Sheet名称
+      #默认导出Sheet名称，不配则取默认值：Sheet1
       default-sheet-name: Sheet1
-      #模板文件路径
+      #模板文件路径，不配则取默认值：空
       template-dir: classpath:templates
-      #默认导出文件格式
+      #默认导出文件格式，不配则取默认值：xlsx
       default-excel-type: xlsx
-      #默认导出方式
+      #默认导出方式，不配则取默认值：easy_excel
       default-export-by: easy_excel
     import:
-      #默认导入读取的Sheet名称
+      #默认导入读取的Sheet名称，不配则取默认值：Sheet1
       default-sheet-name: Sheet1
-      #模板文件路径
+      #模板文件路径，不配则取默认值：空
       template-dir: classpath:templates
-      #默认导入方式
+      #默认导入方式，不配则取默认值：easy_excel
       default-import-by: easy_excel
-      #读取excel超时时间，不设置或设置为0时无读取时间限制
+      #读取excel超时时间（单位ms），不设置或设置为0时无读取时间限制
       read-timeout: 60000
   ```
 ### 使用

@@ -24,7 +24,7 @@ public class ImportProperties {
     private String defaultImportBy = "easy_excel";
 
     /**
-     * 读取excel超时时间，不设置或设置为0时无读取时间限制
+     * 读取excel超时时间（单位ms），不设置或设置为0时无读取时间限制
      */
     private Integer readTimeout;
 
