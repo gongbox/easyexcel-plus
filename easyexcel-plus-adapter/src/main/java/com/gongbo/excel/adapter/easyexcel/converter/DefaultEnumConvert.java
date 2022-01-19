@@ -10,6 +10,7 @@ import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 
 public class DefaultEnumConvert implements Converter<Object> {
     @Override
@@ -24,7 +25,7 @@ public class DefaultEnumConvert implements Converter<Object> {
 
     @Override
     public Object convertToJavaData(ReadCellData cellData, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
-        String stringValue = cellData.getStringValue().trim();
+        String stringValue = Optional.ofNullable(cellData.getStringValue()).map(String::trim).orElse("");
 
         //获取枚举类型
         Class<?> type = excelContentProperty.getField().getType();
