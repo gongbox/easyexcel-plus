@@ -13,7 +13,7 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.alibaba.excel.write.metadata.fill.FillConfig;
-import com.gongbo.excel.adapter.easyexcel.overides.MyExcelWriteFillExecutor;
+import com.gongbo.excel.adapter.easyexcel.overides.ExcelWriteFillExecutor;
 import com.gongbo.excel.common.enums.ExcelType;
 import com.gongbo.excel.common.utils.CollectionUtil;
 import com.gongbo.excel.common.utils.ReflectUtil;
@@ -101,7 +101,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         ExcelWriterBuilder excelWriterBuilder = EasyExcelFactory.write(outputStream, importContext.getTargetArgumentClass());
 
         excelWriterBuilder.sheet(importContext.getSheetNo(), importContext.getSheetName())
-                .doWrite(null);
+                .doWrite((Collection<?>) null);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         }
 
         //使用自己的执行器
-        MyExcelWriteFillExecutor excelWriteFillExecutor = new MyExcelWriteFillExecutor(excelWriter.writeContext());
+        ExcelWriteFillExecutor excelWriteFillExecutor = new ExcelWriteFillExecutor(excelWriter.writeContext());
 
         //data是填充数据
         if (dataFillFlag) {
@@ -240,7 +240,7 @@ public class EasyExcelAdapter implements ExportAdapter, ImportAdapter {
         }
     }
 
-    public void fill(WriteContext context, MyExcelWriteFillExecutor excelWriteFillExecutor,
+    public void fill(WriteContext context, ExcelWriteFillExecutor excelWriteFillExecutor,
                      Object data, FillConfig fillConfig, WriteSheet writeSheet,
                      boolean ignoreFillKeyNotFound) {
         try {

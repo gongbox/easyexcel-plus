@@ -16,7 +16,6 @@ import com.gongbo.excel.export.custom.FileNameConvert;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.ExportFieldInfo;
 import com.gongbo.excel.export.entity.ExportFillData;
-import com.google.common.collect.Lists;
 import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Api(tags = "export")
 @RestController
@@ -228,7 +224,7 @@ public class ExportTestController {
                     .data(map)
                     .build();
 
-            return Lists.newArrayList(exportFillData1, exportFillData2);
+            return Arrays.asList(exportFillData1, exportFillData2);
         }
     }
 
@@ -258,7 +254,7 @@ public class ExportTestController {
                     .data(responseEntity.getData())
                     .build();
 
-            return Lists.newArrayList(exportFillData1, exportFillData2);
+            return Arrays.asList(exportFillData1, exportFillData2);
         }
     }
 
@@ -293,7 +289,7 @@ public class ExportTestController {
                     .data(constantMap2)
                     .build();
 
-            return Lists.newArrayList(exportFillData1, exportFillData2);
+            return Arrays.asList(exportFillData1, exportFillData2);
         }
     }
 }

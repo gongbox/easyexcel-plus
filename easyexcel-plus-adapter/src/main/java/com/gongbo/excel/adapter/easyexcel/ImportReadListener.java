@@ -1,12 +1,10 @@
 package com.gongbo.excel.adapter.easyexcel;
 
 import com.alibaba.excel.context.AnalysisContext;
-import com.alibaba.excel.metadata.CellData;
 import com.alibaba.excel.metadata.CellExtra;
 import com.alibaba.excel.read.listener.ReadListener;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -39,11 +37,6 @@ class ImportReadListener implements ReadListener<Object> {
         if (exceptionConsumer != null) {
             exceptionConsumer.accept(exception, context);
         }
-    }
-
-    @Override
-    public void invokeHead(Map<Integer, CellData> headMap, AnalysisContext context) {
-
     }
 
     @Override

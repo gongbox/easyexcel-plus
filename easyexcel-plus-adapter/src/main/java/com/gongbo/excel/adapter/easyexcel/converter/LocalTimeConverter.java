@@ -3,8 +3,9 @@ package com.gongbo.excel.adapter.easyexcel.converter;
 
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
-import com.alibaba.excel.metadata.CellData;
 import com.alibaba.excel.metadata.GlobalConfiguration;
+import com.alibaba.excel.metadata.data.ReadCellData;
+import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.gongbo.excel.common.utils.Times;
 
@@ -23,7 +24,7 @@ public class LocalTimeConverter implements Converter<LocalTime> {
     }
 
     @Override
-    public LocalTime convertToJavaData(CellData cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public LocalTime convertToJavaData(ReadCellData cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         if (contentProperty == null || contentProperty.getDateTimeFormatProperty() == null) {
             return LocalTime.parse(cellData.getStringValue(), DateTimeFormatter.ofPattern(Times.Pattern.DEFAULT_TIME));
         } else {
@@ -33,12 +34,12 @@ public class LocalTimeConverter implements Converter<LocalTime> {
     }
 
     @Override
-    public CellData<?> convertToExcelData(LocalTime value,
-                                          ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public WriteCellData<?> convertToExcelData(LocalTime value,
+                                               ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         if (contentProperty == null || contentProperty.getDateTimeFormatProperty() == null) {
-            return new CellData<>(value.format(DateTimeFormatter.ofPattern(Times.Pattern.DEFAULT_TIME)));
+            return new WriteCellData<>(value.format(DateTimeFormatter.ofPattern(Times.Pattern.DEFAULT_TIME)));
         } else {
-            return new CellData<>(value.format(DateTimeFormatter.ofPattern(contentProperty.getDateTimeFormatProperty().getFormat())));
+            return new WriteCellData<>(value.format(DateTimeFormatter.ofPattern(contentProperty.getDateTimeFormatProperty().getFormat())));
         }
     }
 }

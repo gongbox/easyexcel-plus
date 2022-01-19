@@ -2,7 +2,6 @@ package com.gongbo.excel.example.config;
 
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.converters.ConverterKeyBuild;
-import com.alibaba.excel.converters.DefaultConverterLoader;
 import com.gongbo.excel.adapter.easyexcel.converter.LocalDateConverter;
 import com.gongbo.excel.adapter.easyexcel.converter.LocalDateTimeConverter;
 import com.gongbo.excel.adapter.easyexcel.converter.LocalTimeConverter;
@@ -10,19 +9,21 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Configuration;
 
+import static com.alibaba.excel.converters.DefaultConverterLoader.loadAllConverter;
+import static com.alibaba.excel.converters.DefaultConverterLoader.loadDefaultWriteConverter;
+
 @NoArgsConstructor
 @Configuration
 public class EasyExcelConfig implements InitializingBean {
 
 
-    private static void putWriteConverter(Converter<?> converter) {
-        DefaultConverterLoader.loadDefaultWriteConverter().put(ConverterKeyBuild.buildKey(converter.supportJavaTypeKey()), converter);
+    private static void putAllConverter(Converter converter) {
+        loadAllConverter().put(ConverterKeyBuild.buildKey(converter.supportJavaTypeKey(), converter.supportExcelTypeKey()),
+                converter);
     }
 
-
-    private static void putAllConverter(Converter<?> converter) {
-        DefaultConverterLoader.loadAllConverter().put(ConverterKeyBuild.buildKey(converter.supportJavaTypeKey(), converter.supportExcelTypeKey()),
-                converter);
+    private static void putWriteConverter(Converter converter) {
+        loadDefaultWriteConverter().put(ConverterKeyBuild.buildKey(converter.supportJavaTypeKey()), converter);
     }
 
     @Override

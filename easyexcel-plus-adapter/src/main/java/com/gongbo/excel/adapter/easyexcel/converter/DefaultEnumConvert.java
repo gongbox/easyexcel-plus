@@ -2,8 +2,9 @@ package com.gongbo.excel.adapter.easyexcel.converter;
 
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
-import com.alibaba.excel.metadata.CellData;
 import com.alibaba.excel.metadata.GlobalConfiguration;
+import com.alibaba.excel.metadata.data.ReadCellData;
+import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 
 import java.lang.reflect.Field;
@@ -22,7 +23,7 @@ public class DefaultEnumConvert implements Converter<Object> {
     }
 
     @Override
-    public Object convertToJavaData(CellData cellData, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public Object convertToJavaData(ReadCellData cellData, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         String stringValue = cellData.getStringValue();
 
         //获取枚举类型
@@ -50,7 +51,7 @@ public class DefaultEnumConvert implements Converter<Object> {
     }
 
     @Override
-    public CellData convertToExcelData(Object o, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
+    public WriteCellData convertToExcelData(Object o, ExcelContentProperty excelContentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         Class<?> type = excelContentProperty.getField().getType();
         Field[] declaredFields = type.getDeclaredFields();
 
@@ -68,7 +69,7 @@ public class DefaultEnumConvert implements Converter<Object> {
         //允许访问私有属性
         field.setAccessible(true);
         Object value = field.get(o);
-        return new CellData<>(String.valueOf(value));
+        return new WriteCellData<>(String.valueOf(value));
     }
 
 }
