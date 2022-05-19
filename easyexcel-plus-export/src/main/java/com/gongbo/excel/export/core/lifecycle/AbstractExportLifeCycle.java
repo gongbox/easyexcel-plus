@@ -90,10 +90,14 @@ public abstract class AbstractExportLifeCycle implements ExportLifecycle {
         else if (export.modelClass() == Export.AutoModel.class && StringUtil.isNotEmpty(export.template())) {
             return null;
         }
-        //根据方法返回类型查找
-        else {
+        //判断是否是自定义类
+        else if (export.modelClass() == Export.AutoModel.class) {
             return Optional.ofNullable(resultHandler.getModelType(targetMethod))
                     .orElseThrow(() -> new IllegalArgumentException("unable to get the export model class, please check the export method or add the modelClass attribute to the Export annotation!"));
+        }
+        //根据方法返回类型查找
+        else {
+            return export.modelClass();
         }
     }
 
