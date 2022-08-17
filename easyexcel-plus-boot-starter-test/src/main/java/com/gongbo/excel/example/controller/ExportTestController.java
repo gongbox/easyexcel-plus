@@ -16,7 +16,6 @@ import com.gongbo.excel.export.custom.FileNameConvert;
 import com.gongbo.excel.export.entity.ExportContext;
 import com.gongbo.excel.export.entity.ExportFieldInfo;
 import com.gongbo.excel.export.entity.ExportFillData;
-import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@Api(tags = "export")
+//@Api(tags = "export")
 @RestController
 @RequestMapping(value = "/export")
 @Validated

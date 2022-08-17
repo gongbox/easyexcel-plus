@@ -1,0 +1,10 @@
+dependencies {
+    api project(':easyexcel-plus-common')
+    api project(':easyexcel-plus-import')
+    api project(':easyexcel-plus-export')
+
+    compileOnly 'org.springframework:spring-aop'
+    compileOnly 'org.aspectj:aspectjweaver'
+
+    api "${libs.easyexcel}"
+}

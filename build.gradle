@@ -1,0 +1,46 @@
+allprojects {
+    group = 'io.github.gongbox'
+    version = '2.5.0'
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    apply from: '../versions.gradle'
+
+    repositories {
+        mavenLocal()
+        maven {
+            url = uri('https://repo.maven.apache.org/maven2')
+        }
+    }
+
+    dependencies {
+        //引入依赖版本统一管理模块
+        implementation platform("${platforms.spring_boot_dependencies}")
+        implementation platform("${platforms.junit_bom}")
+        implementation platform("${platforms.hutool_bom}")
+
+        //lombok
+        compileOnly "${libs.lombok}"
+        annotationProcessor "${libs.lombok}"
+
+        //slf4j
+        implementation 'org.slf4j:slf4j-api'
+
+        //junit
+        testImplementation 'org.junit.jupiter:junit-jupiter-api'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    }
+
+    java {
+        // 指定源代码JDK版本
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        // 指定生成代码JDK版本
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    // 指定编码格式
+    compileJava.options.encoding = 'UTF-8'
+    compileTestJava.options.encoding = 'UTF-8'
+}

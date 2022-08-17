@@ -1,0 +1,22 @@
+ext {
+    versions = [
+            //依赖管理版本
+            spring_boot_version = '2.6.10',
+            junit5_version = '5.8.2',
+            hutool_version = '5.8.4',
+
+            //第三方依赖版本
+            lombok_version = '1.18.24',
+    ]
+    platforms = [
+            'spring_boot_dependencies': "org.springframework.boot:spring-boot-dependencies:${spring_boot_version}",
+            'junit_bom'               : "org.junit:junit-bom:${junit5_version}",
+            'hutool_bom'              : "cn.hutool:hutool-bom:${hutool_version}",
+    ]
+    libs = [
+            'lombok'    : "org.projectlombok:lombok:${lombok_version}",
+            'easyexcel' : 'com.alibaba:easyexcel:3.0.5',
+            'servlet'   : 'javax.servlet:javax.servlet-api:4.0.1',
+            'spring_web': 'org.springframework:spring-web'
+    ]
+}

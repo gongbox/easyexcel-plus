@@ -1,0 +1,9 @@
+rootProject.name = 'easyexcel-plus-parent'
+
+include(':easyexcel-plus-common')
+include(':easyexcel-plus-export')
+include(':easyexcel-plus-import')
+include(':easyexcel-plus-adapter')
+include(':easyexcel-plus')
+include(':easyexcel-plus-boot-starter')
+include(':easyexcel-plus-boot-starter-test')

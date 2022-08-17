@@ -1,0 +1,9 @@
+dependencies {
+    api project(':easyexcel-plus-common')
+
+    compileOnly 'org.springframework:spring-context-support'
+    compileOnly 'org.springframework:spring-aop'
+    compileOnly 'org.aspectj:aspectjweaver'
+    compileOnly 'org.springframework:spring-webmvc'
+    compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+}

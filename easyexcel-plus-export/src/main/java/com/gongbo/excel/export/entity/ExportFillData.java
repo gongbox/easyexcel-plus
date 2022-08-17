@@ -13,6 +13,7 @@ public class ExportFillData {
     /**
      * 填充所有Sheet，默认false，为true时，将对所有sheet填充，此时sheetNo/sheetName将不起作用
      */
+    @Builder.Default
     private boolean fillAllSheet = false;
 
     /**

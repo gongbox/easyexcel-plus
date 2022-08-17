@@ -1,0 +1,4 @@
+dependencies {
+    api "${libs.servlet}"
+    compileOnly "${libs.spring_web}"
+}

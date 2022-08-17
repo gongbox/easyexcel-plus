@@ -3,7 +3,6 @@ package com.gongbo.excel.example.controller;
 import com.gongbo.excel.example.result.Result;
 import com.gongbo.excel.example.view.ExportDemoView;
 import com.gongbo.excel.imports.annotations.Import;
-import io.swagger.annotations.Api;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * @author gongbo
  * @since 2021-01-04
  */
-@Api(tags = "import")
+//@Api(tags = "import")
 @RestController
 @RequestMapping(value = "/import")
 @Validated

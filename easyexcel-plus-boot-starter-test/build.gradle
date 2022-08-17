@@ -1,0 +1,15 @@
+plugins {
+    id "org.springframework.boot" version "2.6.10"
+}
+dependencies {
+    implementation project(':easyexcel-plus-boot-starter')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'cn.hutool:hutool-core'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test', Test) {
+    useJUnitPlatform()
+}
