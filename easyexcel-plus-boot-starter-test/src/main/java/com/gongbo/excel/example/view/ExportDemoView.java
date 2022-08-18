@@ -52,7 +52,7 @@ public class ExportDemoView {
 
     public static List<ExportDemoView> data() {
         return Stream.generate(ExportDemoView::new)
-                .limit(RandomUtil.randomInt(1, 20))
+                .limit(10)
                 .collect(Collectors.toList());
     }
 }

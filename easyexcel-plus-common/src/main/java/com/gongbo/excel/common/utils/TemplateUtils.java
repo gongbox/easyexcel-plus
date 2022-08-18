@@ -19,17 +19,17 @@ public class TemplateUtils {
     public static final String CLASSPATH_PATH_PREFIX = "classpath:";
     public static final String FILE_PATH_PREFIX = "file:";
 
-    public static InputStream getTemplateInputStream(String templateDir, String templateFileName) throws IOException {
+    public static InputStream getTemplateInputStream(String templateDir, String template) throws IOException {
         String templatePath;
-        if (templateFileName.startsWith(CLASSPATH_PATH_PREFIX) || templateFileName.startsWith(FILE_PATH_PREFIX)) {
-            templatePath = templateFileName;
+        if (template.startsWith(CLASSPATH_PATH_PREFIX) || template.startsWith(FILE_PATH_PREFIX)) {
+            templatePath = template;
         } else {
             //没有指定具体路径时必须配置templateDir
             Objects.requireNonNull(templateDir);
-            if (templateDir.endsWith(File.separator) || templateFileName.startsWith(File.separator)) {
-                templatePath = templateDir + templateFileName;
+            if (templateDir.endsWith(File.separator) || template.startsWith(File.separator)) {
+                templatePath = templateDir + template;
             } else {
-                templatePath = templateDir + File.separator + templateFileName;
+                templatePath = templateDir + File.separator + template;
             }
         }
 

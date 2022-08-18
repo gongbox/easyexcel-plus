@@ -11,10 +11,9 @@ public enum GenderEnum {
     MAN(1, "男"),
     WOMAN(2, "女");
 
-    @ExcelValue(ExcelValue.Support.READ)
     private final Integer value;
 
-    @ExcelValue(ExcelValue.Support.WRITE)
+    @ExcelValue(ExcelValue.Support.ALL)
     private final String name;
 
     public static GenderEnum valueOf(int value) {

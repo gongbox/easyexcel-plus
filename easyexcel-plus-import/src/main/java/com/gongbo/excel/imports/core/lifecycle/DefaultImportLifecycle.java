@@ -154,7 +154,7 @@ public class DefaultImportLifecycle implements ImportLifecycle {
             //设置响应头信息
             ResponseUtils.setDownloadFileHeader(response, responseFilename);
             InputStream templateInputStream = TemplateUtils.getTemplateInputStream(importContext.getImportProperties().getTemplateDir(),
-                    importContext.getTemplateFilename());
+                    importContext.getTemplate());
             FileCopyUtils.copy(templateInputStream, response.getOutputStream());
         } else {
             //设置文件后缀

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
  * @author gongbo
  * @since 2021-01-04
  */
-//@Api(tags = "import")
 @RestController
 @RequestMapping(value = "/import")
 @Validated

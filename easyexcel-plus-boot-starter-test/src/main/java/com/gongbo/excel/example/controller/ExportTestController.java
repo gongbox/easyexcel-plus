@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-//@Api(tags = "export")
 @RestController
 @RequestMapping(value = "/export")
 @Validated
@@ -44,7 +43,7 @@ public class ExportTestController {
      */
     @GetMapping(value = "test-normal-array")
     @Export
-    public ExportDemoView[] testNormalData() {
+    public ExportDemoView[] testNormalArray() {
         return ExportDemoView.data().toArray(new ExportDemoView[0]);
     }
 
@@ -87,7 +86,7 @@ public class ExportTestController {
     public static class CustomFileNameConvert implements FileNameConvert {
         @Override
         public String apply(String fileName) {
-            return LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+            return LocalDate.of(2022, 1, 1).format(DateTimeFormatter.BASIC_ISO_DATE);
         }
     }
 
@@ -128,7 +127,7 @@ public class ExportTestController {
      * 导出到固定文件夹
      */
     @GetMapping(value = "test-out-path")
-    @Export(outputPath = "D:\\WorkDir\\temp\\file")
+    @Export(outputPath = "E:\\temp",fileName = "test-out-path")
     public Result<List<ExportDemoView>> testOutPath() {
         return Result.success(ExportDemoView.data());
     }
